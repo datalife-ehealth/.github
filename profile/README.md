@@ -1,6 +1,6 @@
-<p align="center">
-  <img src="./banner.png" alt="DataLife e-Health" width="100%">
-</p>
+<div align="center">
+  <img src="banner.png" alt="DataLife e-Health Banner" width="460" style="max-width: 100%; height: auto;" />
+</div>
 
 <h1 align="center">DataLife e-Health</h1>
 
@@ -41,22 +41,22 @@ DataLife e-Health enforces strict zero-trust separation between Patient Identifi
 The system operates across two physically and logically independent tiers to ensure strict compliance with LGPD/GDPR frameworks:
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#EFF6FF', 'edgeColor': '#4A5568', 'primaryTextColor': '#0F172A', 'lineColor': '#4A5568', 'fontFamily': 'ui-sans-serif, system-ui, sans-serif'}}}%%
-flowchart TB
-    subgraph ClientTier["Tier 1: Client-Side Sovereignty (Local Device)"]
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#EFF6FF', 'edgeColor': '#4A5568', 'lineColor': '#4A5568', 'fontFamily': 'ui-sans-serif, system-ui, sans-serif' }, 'flowchart': {'padding': 20, 'nodeSpacing': 40, 'rankSpacing': 48, 'htmlLabels': true, 'wrappingWidth': 220}}}%%
+flowchart LR
+    subgraph ClientTier["📱 Tier 1: Client Sovereign Device"]
         direction TB
-        P[Patient Identity Owner] --> PII[(Local Vault: Encrypted PII<br/>Name, Tax ID, Phone, Contacts)]
-        P --> OTPGen[Local Ephemeral OTP Minting]
+        P[Patient Identity Owner] --> PII[(Local Encrypted PII<br/>Name, Tax ID, Phone)]
+        P --> OTPGen[Ephemeral OTP Minting]
     end
 
-    subgraph DataLakeTier["Tier 2: Consortium Data Lake (Cryptographic Boundary)"]
+    subgraph DataLakeTier["☁️ Tier 2: Consortium Data Lake"]
         direction TB
-        IngestEngine[Multi-Modal Ingest API] --> ObjectStore[(Raw Payload Store<br/>DICOM, Lab XML, Bio-Signals)]
-        IngestEngine --> Ledger[(Relational Index and Merkle Proof Chain<br/>Chained Merkle Roots / SHA-256)]
+        IngestEngine[Multi-Modal Ingest API] --> ObjectStore[(Raw Payloads<br/>DICOM, Lab XML)]
+        IngestEngine --> Ledger[(Chained Merkle Audit Ledger<br/>SHA-256 Provenance)]
     end
 
-    OTPGen -.->|"1. Time-Bound Grant Token"| IngestEngine
-    Device[Clinical Modalities / Hospital Systems] -->|"2. Raw Observation Upload"| IngestEngine
+    OTPGen ==>|"1. Time-Bound Grant"| IngestEngine
+    Device[Clinical Devices / Hospitals] -->|"2. Exam Upload"| IngestEngine
 
     classDef client fill:#EFF6FF,stroke:#3B82F6,stroke-width:1.5px,color:#1E3A8A;
     classDef cloud fill:#F8FAFC,stroke:#64748B,stroke-width:1.5px,color:#0F172A;
@@ -74,28 +74,28 @@ flowchart TB
 Observation access requires mutual validation. Under normal workflows, patients govern disclosure. In acute clinical emergencies, a strict, auditable override protects patient survival without compromising downstream non-repudiation.
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'edgeColor': '#4A5568', 'fontFamily': 'ui-sans-serif, system-ui, sans-serif'}}}%%
-flowchart TD
-    Req[Clinician Initiates Clinical Query] --> ConsciousCheck{Patient Conscious<br/>and Able to Authorize?}
+%%{init: {'theme': 'base', 'themeVariables': { 'edgeColor': '#4A5568', 'lineColor': '#4A5568', 'fontFamily': 'ui-sans-serif, system-ui, sans-serif' }, 'flowchart': {'padding': 20, 'nodeSpacing': 36, 'rankSpacing': 44, 'htmlLabels': true, 'wrappingWidth': 200}}}%%
+flowchart LR
+    Req[Clinician Query] --> Check{Patient Able<br/>to Authorize?}
 
-    ConsciousCheck -->|Yes - Routine Care| OTPFlow[Patient Grants Ephemeral OTP via App]
-    OTPFlow --> ValidateOTP[API Validates Time-to-Live and Granular Scope]
-    ValidateOTP --> AccessGranted[Decrypted Clinical Stream Delivered]
+    Check -->|Yes: Routine Care| OTPFlow[Patient Grants Ephemeral OTP]
+    OTPFlow --> ValidateOTP[Validate Scope and TTL]
+    ValidateOTP --> Access[Decrypted Clinical Stream Delivered]
 
-    ConsciousCheck -->|No - Acute Emergency| GlassBreak[Verified Emergency Clinician Injects Master ID]
-    GlassBreak --> PreAudit[(Pre-Flight Immutable Audit Block Committed)]
-    PreAudit --> EmergencyAccess[Temporary Emergency Session Opened]
-    EmergencyAccess --> AccessGranted
+    Check -->|No: Acute Emergency| GlassBreak[Verified Emergency Clinician ID]
+    GlassBreak --> PreAudit[(Pre-Flight Merkle Audit Committed)]
+    PreAudit --> EmergencySession[Temporary Emergency Session Opened]
+    EmergencySession --> Access
 
-    EmergencyAccess -.-> PostAudit[Mandatory Post-Care Ratification and Dispute Log]
+    EmergencySession -.-> PostAudit[Mandatory Post-Care Ratification and Dispute Log]
 
     classDef normal fill:#F0FDF4,stroke:#16A34A,stroke-width:1.5px,color:#14532D;
     classDef alert fill:#FEF2F2,stroke:#DC2626,stroke-width:1.5px,color:#7F1D1D;
     classDef neutral fill:#F8FAFC,stroke:#475569,stroke-width:1.5px,color:#0F172A;
 
-    class ConsciousCheck,Req,AccessGranted neutral;
+    class Req,Check,Access neutral;
     class OTPFlow,ValidateOTP normal;
-    class GlassBreak,PreAudit,EmergencyAccess,PostAudit alert;
+    class GlassBreak,PreAudit,EmergencySession,PostAudit alert;
 ```
 
 #### Protocol guarantees
