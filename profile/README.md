@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./logo.png" alt="DataLife e-Health" width="160">
+  <img src="./banner.png" alt="DataLife e-Health" width="100%">
 </p>
 
 <h1 align="center">DataLife e-Health</h1>
@@ -32,47 +32,76 @@ The value proposition is practical:
 
 This organization publishes reference software. It is local-first, reproducible, and free of paid cloud APIs. It is not a certified electronic health record, not a hospital information system, and not a distributed blockchain. The audit log is a cryptographic tamper-evident ledger: chained Merkle roots over canonical records, verified inside a single organization or a small consortium.
 
-## Architecture
+## Architecture & Security Boundary
 
-Personal data and clinical payloads never share a write path.
+DataLife e-Health enforces strict zero-trust separation between Patient Identifiable Information (PII) and raw clinical observation payloads. Personal identifiers and medical examination streams never share a unified write path or administrative domain.
+
+### 1. Dual-Tier Decoupled Storage Topology
+
+The system operates across two physically and logically independent tiers to ensure strict compliance with LGPD/GDPR frameworks:
 
 ```mermaid
-flowchart LR
-  subgraph client [Client-side personal tier]
-    PII[Name, CPF, phone, emergency contacts]
-    OTP[Patient OTP issuer]
-  end
-  subgraph lake [Cloud data lake tier]
-    RAW[Immutable exams: DICOM metadata, lab XML, clinical JSON]
-    PG[(PostgreSQL)]
-    OBJ[Object storage]
-    LEDGER[Chained Merkle ledger]
-  end
-  Patient[Patient] --> PII
-  Patient --> OTP
-  Device[Devices and imaging] --> RAW
-  RAW --> PG
-  RAW --> OBJ
-  OTP -->|time-bounded grant| PG
-  PG --> LEDGER
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#EFF6FF', 'edgeColor': '#4A5568', 'primaryTextColor': '#0F172A', 'lineColor': '#4A5568', 'fontFamily': 'ui-sans-serif, system-ui, sans-serif'}}}%%
+flowchart TB
+    subgraph ClientTier["Tier 1: Client-Side Sovereignty (Local Device)"]
+        direction TB
+        P[Patient Identity Owner] --> PII[(Local Vault: Encrypted PII<br/>Name, Tax ID, Phone, Contacts)]
+        P --> OTPGen[Local Ephemeral OTP Minting]
+    end
+
+    subgraph DataLakeTier["Tier 2: Consortium Data Lake (Cryptographic Boundary)"]
+        direction TB
+        IngestEngine[Multi-Modal Ingest API] --> ObjectStore[(Raw Payload Store<br/>DICOM, Lab XML, Bio-Signals)]
+        IngestEngine --> Ledger[(Relational Index and Merkle Proof Chain<br/>Chained Merkle Roots / SHA-256)]
+    end
+
+    OTPGen -.->|"1. Time-Bound Grant Token"| IngestEngine
+    Device[Clinical Modalities / Hospital Systems] -->|"2. Raw Observation Upload"| IngestEngine
+
+    classDef client fill:#EFF6FF,stroke:#3B82F6,stroke-width:1.5px,color:#1E3A8A;
+    classDef cloud fill:#F8FAFC,stroke:#64748B,stroke-width:1.5px,color:#0F172A;
+    class P,PII,OTPGen client;
+    class IngestEngine,ObjectStore,Ledger,Device cloud;
 ```
 
-Regular access and emergency access are different keys into the same lake.
+#### Isolation invariants
+
+- **Zero PII replication.** The cloud relational tier stores pseudonymous entity hashes and payload pointers. A complete compromise of the central database leaks zero decipherable personal names, addresses, or identifiers.
+- **Deterministic provenance.** Canonical payloads are indexed against cryptographic Merkle trees. Modification of past observation bytes invalidates the chained root immediately.
+
+### 2. Dual-Key Access & Glass-Break Protocol
+
+Observation access requires mutual validation. Under normal workflows, patients govern disclosure. In acute clinical emergencies, a strict, auditable override protects patient survival without compromising downstream non-repudiation.
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'edgeColor': '#4A5568', 'fontFamily': 'ui-sans-serif, system-ui, sans-serif'}}}%%
 flowchart TD
-  A[Clinician requests a record] --> B{Patient conscious and able to consent?}
-  B -->|Yes| C[Patient issues a time-bounded OTP]
-  C --> D[Token checked against patient id and expiry]
-  D --> E[Read clinical payload only]
-  B -->|No, emergency| F[Verified physician presents Master Physician ID]
-  F --> G[Glass-break session opened]
-  G --> H[Immutable audit row written before the read]
-  H --> E
-  E --> I[After care, patient confirms or disputes the session]
+    Req[Clinician Initiates Clinical Query] --> ConsciousCheck{Patient Conscious<br/>and Able to Authorize?}
+
+    ConsciousCheck -->|Yes - Routine Care| OTPFlow[Patient Grants Ephemeral OTP via App]
+    OTPFlow --> ValidateOTP[API Validates Time-to-Live and Granular Scope]
+    ValidateOTP --> AccessGranted[Decrypted Clinical Stream Delivered]
+
+    ConsciousCheck -->|No - Acute Emergency| GlassBreak[Verified Emergency Clinician Injects Master ID]
+    GlassBreak --> PreAudit[(Pre-Flight Immutable Audit Block Committed)]
+    PreAudit --> EmergencyAccess[Temporary Emergency Session Opened]
+    EmergencyAccess --> AccessGranted
+
+    EmergencyAccess -.-> PostAudit[Mandatory Post-Care Ratification and Dispute Log]
+
+    classDef normal fill:#F0FDF4,stroke:#16A34A,stroke-width:1.5px,color:#14532D;
+    classDef alert fill:#FEF2F2,stroke:#DC2626,stroke-width:1.5px,color:#7F1D1D;
+    classDef neutral fill:#F8FAFC,stroke:#475569,stroke-width:1.5px,color:#0F172A;
+
+    class ConsciousCheck,Req,AccessGranted neutral;
+    class OTPFlow,ValidateOTP normal;
+    class GlassBreak,PreAudit,EmergencyAccess,PostAudit alert;
 ```
 
-The personal tier is not replicated into PostgreSQL. The lake tier keeps exam bytes and the audit chain. A leak of the lake does not yield the patient's name, tax id, or phone number, because those fields were never written there.
+#### Protocol guarantees
+
+- **Pre-flight tamper-evident logging.** In a glass-break override, access is written into the cryptographic Merkle chain before observation bytes are returned to the clinical display.
+- **Post-incident dispute window.** When patient consciousness is restored, the client agent flags the unratified emergency session, creating an immutable audit dispute log.
 
 ## Repository ecosystem
 
