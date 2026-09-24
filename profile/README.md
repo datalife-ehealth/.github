@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://github.com/datalife-ehealth/datalife-datalake-core/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License: MIT"></a>
   <a href="https://github.com/datalife-ehealth/datalife-datalake-core"><img src="https://img.shields.io/badge/Core%20Engine-FastAPI%20%7C%20Postgres-009688.svg?style=flat-square" alt="Core Engine"></a>
-  <a href="#contributing--community"><img src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"></a>
+  <a href="#contributing--collaboration-boundary"><img src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"></a>
   <a href="#architecture--security-boundary"><img src="https://img.shields.io/badge/Security-Zero--PII%20Lake-indigo.svg?style=flat-square" alt="Security"></a>
   <a href="https://github.com/datalife-ehealth/datalife-datalake-core"><img src="https://img.shields.io/badge/Status-Active%20Development-orange.svg?style=flat-square" alt="Status: Active Development"></a>
 </p>
@@ -20,8 +20,8 @@
 <p align="center">
   <a href="https://github.com/datalife-ehealth/datalife-datalake-core">Core Engine</a> •
   <a href="#architecture--security-boundary">Architecture</a> •
-  <a href="#repository-ecosystem">Ecosystem</a> •
-  <a href="#contributing--community">Join the Effort</a> •
+  <a href="#repository-ecosystem--status">Ecosystem</a> •
+  <a href="#contributing--collaboration-boundary">Join the Effort</a> •
   <a href="https://github.com/datalife-ehealth/.github/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a>
 </p>
 
@@ -145,38 +145,33 @@ flowchart TD
 
 ---
 
-## Repository Ecosystem
+## Repository Ecosystem & Status
 
-Only the core engine has a maintained implementation today. The other three names are reserved. Claim one by opening a contribution task in this profile repository before you start, so the boundary with the core stays explicit.
-
-| Repository | Status | Primary Responsibilities | Stack | Start here |
-|---|---|---|---|---|
-| [datalife-datalake-core](https://github.com/datalife-ehealth/datalife-datalake-core) | Active Core | Microservice engine, multi-modal ingestion, Merkle verification, OTP/emergency auth | Python 3.11, FastAPI, PostgreSQL | [Good first issues](https://github.com/datalife-ehealth/datalife-datalake-core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) |
-| datalife-mobile-app | RFC / Help Wanted | Patient client: sovereign local PII encryption, exam viewer, OTP minting | Flutter / React Native | [Claim the mobile RFC](https://github.com/datalife-ehealth/.github/issues/new?template=03_contribution_task.md&title=task%3A%20datalife-mobile-app) |
-| datalife-web-portal | RFC / Help Wanted | Clinician console, teleregulation workflows, glass-break audit dashboard | TypeScript, Next.js / Vue | [Claim the portal RFC](https://github.com/datalife-ehealth/.github/issues/new?template=03_contribution_task.md&title=task%3A%20datalife-web-portal) |
-| datalife-infra-devops | RFC / Help Wanted | Reproducible deployment recipes, Docker Compose, Kubernetes helm charts | Docker, Terraform, K8s | [Claim the delivery RFC](https://github.com/datalife-ehealth/.github/issues/new?template=03_contribution_task.md&title=task%3A%20datalife-infra-devops) |
+| Repository | Status | Current Reality & Scope | Stack | Contributor Path |
+| :--- | :--- | :--- | :--- | :--- |
+| [**`datalife-datalake-core`**](https://github.com/datalife-ehealth/datalife-datalake-core) | 🟢 **Completed & Maintained** | **Core architecture implemented.** Multi-modal ingestion, dual-tier isolation, and Merkle audit trail are complete. | Python 3.11, FastAPI, PostgreSQL | **Deepening only:** Benchmark stress tests, advanced parser extensions, cryptographic profiling. |
+| [**`datalife-mobile-app`**](https://github.com/datalife-ehealth) | 🟡 **Unassigned / Open for Lead** | **Currently unstaffed.** Patient-facing sovereign application, local encrypted vault, and OTP issuance need to be built. | Flutter / React Native | [Claim Ownership as Lead](https://github.com/datalife-ehealth/.github/issues/new?template=03_contribution_task.md) |
+| [**`datalife-web-portal`**](https://github.com/datalife-ehealth) | 🟡 **Unassigned / Open for Lead** | **Currently unstaffed.** Multi-doctor consultation portal (nutrition/physician diet flows) and glass-break review console. | TypeScript, React / Vue | [Claim Ownership as Lead](https://github.com/datalife-ehealth/.github/issues/new?template=03_contribution_task.md) |
+| [**`datalife-infra-devops`**](https://github.com/datalife-ehealth) | 🟡 **Unassigned / Open for Lead** | **Currently unstaffed.** Production Kubernetes helm charts, container security hardening, and deployment automation. | Docker, K8s, GitHub Actions | [Claim DevOps Lead](https://github.com/datalife-ehealth/.github/issues/new?template=03_contribution_task.md) |
+| [**`datalife-analytics-downstream`**](https://github.com/datalife-ehealth) | 🔵 **Proposed Research** | **Exploratory.** Machine learning models for longitudinal disease risk and public health epidemic projections on de-identified data. | Python, PyTorch / Scikit-Learn | [Propose AI/ML RFC](https://github.com/datalife-ehealth/.github/issues/new?template=02_feature_request.md) |
 
 ---
 
-## Contributing & Community
+## Contributing & Collaboration Boundary
 
-Building transparent, privacy-first healthcare infrastructure is a collaborative mission. We cannot build this alone, and we warmly welcome contributions of all forms and sizes. A typo fix, an architecture discussion, and a pull request are all real contributions.
+### 1. The Core Engine: Deepen, Don't Reinvent
+The fundamental architecture of DataLife e-Health—specifically the decoupled dual-tier boundary, multi-modal payload ingestion, and tamper-evident Merkle ledger—is **already implemented and operational** in `datalife-datalake-core`.
+* Contributions to the core engine are welcome where they **deepen existing primitives**: optimizing Merkle root recalculation latency, hardening DICOM/XML validation edge cases, or writing regression test suites.
+* Architectural redesign proposals must be vetted via a detailed RFC before submitting PRs.
 
-### How You Can Help
+### 2. Peripheral Ecosystem: Open for Ownership
+The client-facing applications and operations infrastructure are completely greenfield:
+* **No one is currently assigned** to the Mobile App, Web Portal, or DevOps deployment tooling.
+* If you join from **DemocracyLab** or the wider community, you have the opportunity to take full technical leadership over an entire peripheral repository.
+* Once your RFC is reviewed, you will be granted repo-level write access to lead development within the consortium guidelines.
 
-* **Healthcare & Public Health Practitioners**: Review our clinical access workflows and suggest real-world regulatory edge cases.
-* **Backend & Cryptography Engineers**: Stress-test our Merkle tree audit structures and benchmark ingestion performance.
-* **Frontend & Mobile Developers**: Help us prototype the client apps (`datalife-mobile-app` and `datalife-web-portal`).
-* **Technical Writers & Translators**: Improve our documentation, deployment tutorials, and multilingual guides.
+---
 
-### Getting Started
-
-Five minutes is enough to find a place to stand.
-
-1. **Explore the code.** Check out [datalife-datalake-core](https://github.com/datalife-ehealth/datalife-datalake-core) to see the engine in action.
-2. **Pick a labeled task.** Browse [good first issues](https://github.com/datalife-ehealth/datalife-datalake-core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) on the core, or open an [active RFC](https://github.com/datalife-ehealth/.github/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) if you want to shape a design before code exists.
-3. **Claim empty repositories in the open.** Mobile, web, and delivery work starts as a [contribution task](https://github.com/datalife-ehealth/.github/issues/new?template=03_contribution_task.md) in this profile repository. Use the links in the ecosystem table.
-4. **Propose ideas.** Have a suggestion or design critique? Open a [feature request](https://github.com/datalife-ehealth/.github/issues/new?template=02_feature_request.md).
-5. **Follow the standards.** Read the [contribution guide](https://github.com/datalife-ehealth/.github/blob/main/CONTRIBUTING.md) and the [Code of Conduct](https://github.com/datalife-ehealth/.github/blob/main/CODE_OF_CONDUCT.md). Branch names use `feat/`, `fix/`, or `docs/`.
-
-Maintained by the DataLife Open-Source Working Group & Community Stewards.
+<p align="center">
+  <em>DataLife e-Health is an open-source initiative dedicated to digital sovereignty and resilient public health.<br>Maintained by the DataLife Open-Source Working Group & Community Stewards.</em>
+</p>
