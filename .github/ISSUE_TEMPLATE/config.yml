@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: DataLife e-Health profile
+    url: https://github.com/datalife-ehealth/.github/blob/main/profile/README.md
+    about: Architecture, roadmap, and repository map
