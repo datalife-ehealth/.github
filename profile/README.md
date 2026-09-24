@@ -41,27 +41,33 @@ DataLife e-Health enforces strict zero-trust separation between Patient Identifi
 The system operates across two physically and logically independent tiers to ensure strict compliance with LGPD/GDPR frameworks:
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#EFF6FF', 'edgeColor': '#4A5568', 'lineColor': '#4A5568', 'fontFamily': 'ui-sans-serif, system-ui, sans-serif' }, 'flowchart': {'padding': 20, 'nodeSpacing': 40, 'rankSpacing': 48, 'htmlLabels': true, 'wrappingWidth': 220}}}%%
-flowchart LR
-    subgraph ClientTier["📱 Tier 1: Client Sovereign Device"]
-        direction TB
-        P[Patient Identity Owner] --> PII[(Local Encrypted PII<br/>Name, Tax ID, Phone)]
-        P --> OTPGen[Ephemeral OTP Minting]
+%%{init: {'theme': 'base', 'themeVariables': { 'fontSize': '14px', 'primaryTextColor': '#0F172A', 'lineColor': '#4A5568', 'edgeColor': '#4A5568'}}}%%
+flowchart TB
+    subgraph Client["📱 Tier 1: Client Sovereign Device"]
+        P["👤 Patient Owner"]
+        Vault[("🔒 Local Encrypted PII<br/>(Name, Tax ID, Phone)")]
+        OTPGen["🔑 Ephemeral OTP Generator"]
+        P --> Vault
+        P --> OTPGen
     end
 
-    subgraph DataLakeTier["☁️ Tier 2: Consortium Data Lake"]
-        direction TB
-        IngestEngine[Multi-Modal Ingest API] --> ObjectStore[(Raw Payloads<br/>DICOM, Lab XML)]
-        IngestEngine --> Ledger[(Chained Merkle Audit Ledger<br/>SHA-256 Provenance)]
+    subgraph Cloud["☁️ Tier 2: Consortium Data Lake"]
+        Ingest["⚡ Ingestion API Engine"]
+        Lake[("📦 Raw Observation Store<br/>(DICOM Imaging, Lab XML)")]
+        Ledger[("🛡️ Relational Merkle Ledger<br/>(Tamper-Proof Audit Chain)")]
+        Ingest --> Lake
+        Ingest --> Ledger
     end
 
-    OTPGen ==>|"1. Time-Bound Grant"| IngestEngine
-    Device[Clinical Devices / Hospitals] -->|"2. Exam Upload"| IngestEngine
+    OTPGen ==>|"1. Ephemeral Grant Token"| Ingest
+    Hospital["🏥 Clinical Modalities / Hospitals"] ==>|"2. Raw Payload Upload"| Ingest
 
-    classDef client fill:#EFF6FF,stroke:#3B82F6,stroke-width:1.5px,color:#1E3A8A;
-    classDef cloud fill:#F8FAFC,stroke:#64748B,stroke-width:1.5px,color:#0F172A;
-    class P,PII,OTPGen client;
-    class IngestEngine,ObjectStore,Ledger,Device cloud;
+    classDef c1 fill:#EFF6FF,stroke:#3B82F6,stroke-width:1.5px,color:#1E3A8A;
+    classDef c2 fill:#F8FAFC,stroke:#64748B,stroke-width:1.5px,color:#0F172A;
+    classDef ext fill:#FFFFFF,stroke:#94A3B8,stroke-width:1px,color:#334155;
+    class Client c1;
+    class Cloud c2;
+    class Hospital ext;
 ```
 
 #### Isolation invariants
@@ -74,28 +80,45 @@ flowchart LR
 Observation access requires mutual validation. Under normal workflows, patients govern disclosure. In acute clinical emergencies, a strict, auditable override protects patient survival without compromising downstream non-repudiation.
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'edgeColor': '#4A5568', 'lineColor': '#4A5568', 'fontFamily': 'ui-sans-serif, system-ui, sans-serif' }, 'flowchart': {'padding': 20, 'nodeSpacing': 36, 'rankSpacing': 44, 'htmlLabels': true, 'wrappingWidth': 200}}}%%
-flowchart LR
-    Req[Clinician Query] --> Check{Patient Able<br/>to Authorize?}
+%%{init: {'theme': 'base', 'themeVariables': { 'fontSize': '14px', 'lineColor': '#4A5568', 'edgeColor': '#4A5568'}}}%%
+flowchart TD
+    Req["🩺 Clinician Requests Record Access"]
+    Check{"Patient Conscious & Able to Authorize?"}
 
-    Check -->|Yes: Routine Care| OTPFlow[Patient Grants Ephemeral OTP]
-    OTPFlow --> ValidateOTP[Validate Scope and TTL]
-    ValidateOTP --> Access[Decrypted Clinical Stream Delivered]
+    Req --> Check
 
-    Check -->|No: Acute Emergency| GlassBreak[Verified Emergency Clinician ID]
-    GlassBreak --> PreAudit[(Pre-Flight Merkle Audit Committed)]
-    PreAudit --> EmergencySession[Temporary Emergency Session Opened]
-    EmergencySession --> Access
+    %% Routine Care Track
+    subgraph StandardTrack["Routine Care Protocol"]
+        OTP["📱 Patient Issues Ephemeral OTP"]
+        Val["⏳ Validate TTL & Granular Scope"]
+        OTP --> Val
+    end
 
-    EmergencySession -.-> PostAudit[Mandatory Post-Care Ratification and Dispute Log]
+    %% Emergency Glass-Break Track
+    subgraph EmergencyTrack["Emergency Glass-Break Protocol"]
+        Glass["🚨 Verified Physician ID Injected"]
+        Audit[("🔒 Pre-Flight Merkle Audit Committed")]
+        Sess["⚡ Ephemeral Emergency Session Opened"]
+        Glass --> Audit --> Sess
+    end
+
+    Check -->|"Yes: Routine Care"| OTP
+    Check -->|"No: Acute Emergency"| Glass
+
+    Read["🔓 Access Granted: Decrypted Clinical Payload"]
+    Val --> Read
+    Sess --> Read
+
+    Dispute["📋 Mandatory Post-Care Patient Dispute Window"]
+    Sess -.-> Dispute
 
     classDef normal fill:#F0FDF4,stroke:#16A34A,stroke-width:1.5px,color:#14532D;
     classDef alert fill:#FEF2F2,stroke:#DC2626,stroke-width:1.5px,color:#7F1D1D;
     classDef neutral fill:#F8FAFC,stroke:#475569,stroke-width:1.5px,color:#0F172A;
 
-    class Req,Check,Access neutral;
-    class OTPFlow,ValidateOTP normal;
-    class GlassBreak,PreAudit,EmergencySession,PostAudit alert;
+    class Req,Check,Read neutral;
+    class OTP,Val normal;
+    class Glass,Audit,Sess,Dispute alert;
 ```
 
 #### Protocol guarantees
