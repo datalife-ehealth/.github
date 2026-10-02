@@ -1,34 +1,46 @@
 ---
 name: Bug report
-about: A defect in a DataLife e-Health repository
-title: "fix: "
+about: Report a reproducible defect using synthetic data
+title: "[Bug] "
 labels: bug
-assignees: FinalSunFlower
+assignees: ""
 ---
 
 ## Summary
 
-What failed, and what did you expect?
+What happened, and what did you expect instead?
 
-## Repository
+## Affected repository and version
 
-- [ ] datalife-datalake-core
-- [ ] datalife-web-portal
-- [ ] datalife-mobile-app
-- [ ] datalife-infra-devops
+- Repository:
+- Commit or tag:
+- Operating system/platform:
+- Runtime, browser, device, or toolchain version:
 
-## Reproduction
+## Minimal reproduction
+
+Use synthetic values only.
 
 1.
 2.
 3.
 
-## Environment
+## Evidence
 
-- Operating system:
-- Python version:
-- Commit or tag:
+Provide the smallest relevant log, stack trace, screenshot, or failing test. Remove
+patient information, subject identifiers, access grants, credentials, device IDs,
+local paths, and other sensitive values.
 
-## Logs
+## Impact and regression
 
-Paste the relevant error. Remove names, tax identifiers, phone numbers, and tokens.
+- Who or what is affected?
+- Did this work in an earlier commit or version?
+
+## Boundary check
+
+- [ ] This report contains synthetic data only.
+- [ ] This is not a vulnerability or privacy disclosure.
+- [ ] I searched for an existing issue.
+
+Security or privacy failures must follow the private reporting instructions in
+`SECURITY.md` rather than this template.

@@ -1,47 +1,132 @@
 # Contributing to DataLife e-Health
 
-Maintainer: Luchang Jiang (@FinalSunFlower).
+Thank you for contributing to DataLife e-Health. This guide applies across the
+organization. A repository's own `CONTRIBUTING.md`, `SECURITY.md`, and README may add
+more specific requirements.
 
-These rules apply to every repository under the `datalife-ehealth` organization.
+Maintainer: [Luchang Jiang (@FinalSunFlower)](https://github.com/FinalSunFlower).
 
-## Before you write code
+## Start here
 
-1. Search open issues. If the work is not described, open one.
-2. For a feature or a new repository, use the contribution-task template and wait until it is assigned to you.
-3. A comment that says "I am taking this" is not a claim. The issue must be assigned.
+1. Read the [organization profile](profile/README.md) and the target repository's
+   README to understand its maturity and system boundary.
+2. Search existing issues and the current milestone before proposing work.
+3. Comment on a scoped issue with your intended approach. A comment is not a claim;
+   wait for maintainer assignment before substantial implementation.
+4. Fork the repository, branch from `main`, and keep the pull request focused on one
+   agreed outcome.
+
+Good first issues are deliberately narrow. An issue's acceptance criteria define a
+minimum safe result, not the only implementation or the limit of future work.
+
+## RFC-first changes
+
+Open an RFC-style issue and align on the design before writing substantial code when
+a change affects any of the following:
+
+- architecture, frameworks, public schemas, or API contracts;
+- privacy, authorization, cryptography, key custody, recovery, or trust boundaries;
+- a new external service, network destination, telemetry path, or paid dependency;
+- agent tools, prompts with operational effects, clinical workflows, or human-review
+  boundaries;
+- analytics data contracts, cohort definitions, model claims, or bulk exports; or
+- compatibility across more than one ecosystem repository.
+
+A useful RFC explains the user need, current reality, proposed outcome, non-goals,
+alternatives, privacy and security impact, migration or compatibility concerns, and
+testable acceptance criteria. Diagrams, schemas, threat models, and wireframes are
+welcome; a large code submission is not required to start the discussion.
+
+Small documentation corrections and well-reproduced bug fixes usually need a focused
+issue rather than a full RFC unless they change a boundary above.
 
 ## Branch names
 
-Create the branch from `main`.
+Create branches from the latest `main`.
 
 | Prefix | Use |
 |---|---|
-| `feat/` | A new behavior or endpoint |
-| `fix/` | A defect with a failing test or a clear reproduction |
-| `docs/` | Documentation only |
+| `feat/` | New observable behavior or capability |
+| `fix/` | A defect with a reproduction or failing test |
+| `docs/` | Documentation-only work |
+| `test/` | Test or evaluation coverage without behavior changes |
+| `chore/` | Maintenance with no product behavior change |
 
-Example: `feat/otp-single-use`.
+Examples: `feat/otp-consent-review`, `fix/merkle-tamper-case`,
+`docs/mobile-threat-model`.
+
+## Project-wide boundaries
+
+- Use synthetic, invented, or explicitly licensed de-identified data only. Never put
+  real patient information in source, fixtures, issues, screenshots, recordings, or
+  pull requests.
+- Keep names, government identifiers, phone numbers, email addresses, emergency
+  contacts, and identity mappings out of central services and external telemetry.
+- Treat opaque subject identifiers, access grants, physician identifiers, audit
+  reasons, and clinical content as sensitive.
+- Do not add hidden network calls, mandatory paid services, proprietary cloud/EHR
+  lock-in, or a second audit mechanism.
+- Do not describe the chained Merkle audit log as a distributed blockchain.
+- Do not present research software as medical advice, a clinical decision maker, a
+  certified medical device, or an emergency-response service.
+- Agent output is untrusted and cannot bypass typed validation, authorization, or
+  required human review.
+- Downstream analytics remain read-only and must not scrape transactional internals.
+
+If a proposal cannot preserve these boundaries, the RFC must identify the conflict
+explicitly. Do not silently weaken an invariant to make an implementation pass.
+
+## Development and verification
+
+Follow the target repository's README for its current toolchain. Several ecosystem
+repositories are still scaffolds; do not introduce a framework before the relevant
+RFC is accepted.
+
+For `datalife-datalake-core`:
+
+```bash
+python -m pip install -e ".[test]"
+python -m pytest -q
+```
+
+For documentation:
+
+```bash
+npx --yes markdownlint-cli2@0.18.1 "**/*.md" "#**/.git/**"
+```
+
+As implementations arrive, repository-specific checks take precedence. A pull
+request should test the behavior it changes and include evidence proportional to its
+risk: unit and contract tests, adversarial evaluation, accessibility checks,
+cross-platform verification, leakage tests, or reproducible statistical analysis.
 
 ## Pull requests
 
-- One concern per pull request.
-- Describe the behavior a reviewer can observe. Link the issue.
-- Include tests for `datalife-datalake-core`. Documentation-only changes say so in the test plan.
-- Do not add paid APIs, hidden network calls, or a second audit mechanism.
-- Keep personal identifiers out of fixtures. Use synthetic ids.
-- The ledger is a cryptographic tamper-evident log with chained Merkle trees. Do not describe it as a distributed blockchain.
+- Link the assigned issue or accepted RFC.
+- Explain what users or contributors can observe after the change.
+- State what is deliberately out of scope.
+- List exact verification commands and relevant environments or platforms.
+- Document privacy, security, clinical-safety, accessibility, API, schema, and
+  migration impact as applicable.
+- Keep generated artifacts, dependencies, credentials, model weights, private data,
+  and build output out of Git.
+- Resolve review conversations and update documentation when behavior or contracts
+  change.
 
-A maintainer reviews for correctness, privacy boundaries, and test evidence. Approval from Luchang Jiang is required before merge.
+Protected branches require maintainer/CODEOWNER approval. The maintainer reviews for
+correctness, scope, maintainability, test evidence, and preservation of project
+boundaries.
 
-## Local checks
+## Security and privacy reports
 
-```bash
-pip install -e ".[test]"
-pytest -q
-```
+Do not disclose a suspected vulnerability, PII leak, exposed credential, unsafe agent
+action, or re-identification risk in a public issue or Discussion. Follow the
+[organization security policy](SECURITY.md) or the repository-specific policy.
 
-Run that command inside `datalife-datalake-core` when the change touches Python.
+## Communication
 
-## Contact
-
-Open an issue, or write to Luchang Jiang at auroral.sunflower@gmail.com.
+- Use repository Issues for scoped work, bugs, and RFC decisions.
+- Use [organization Discussions](https://github.com/datalife-ehealth/.github/discussions)
+  for introductions and cross-project questions.
+- Read and follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+- General contact: `auroral.sunflower@gmail.com`.

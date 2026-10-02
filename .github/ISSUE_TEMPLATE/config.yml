@@ -1,5 +1,11 @@
 blank_issues_enabled: false
 contact_links:
-  - name: DataLife e-Health profile
-    url: https://github.com/datalife-ehealth/.github/blob/main/profile/README.md
-    about: Architecture, roadmap, and repository map
+  - name: Organization profile and repository map
+    url: https://github.com/datalife-ehealth
+    about: Read the architecture, project status, and contributor entry points.
+  - name: Cross-project questions and introductions
+    url: https://github.com/datalife-ehealth/.github/discussions
+    about: Use Discussions for community questions that are not scoped work items.
+  - name: Security and privacy reporting policy
+    url: https://github.com/datalife-ehealth/.github/blob/main/SECURITY.md
+    about: Do not disclose vulnerabilities or sensitive data in a public issue.

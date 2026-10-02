@@ -1,27 +1,55 @@
 ---
-name: Feature request
-about: Propose a change to DataLife e-Health
-title: "feat: "
+name: Feature or RFC proposal
+about: Propose a capability, contract, workflow, or architectural decision
+title: "[RFC] "
 labels: enhancement
-assignees: FinalSunFlower
+assignees: ""
 ---
 
-## Problem
+## Problem and users
 
-Who is blocked, and by what?
+Who is blocked, by what problem, and why does it belong in this repository?
 
-## Proposal
+## Current reality
 
-What should the software do after this change?
+Describe what exists today. Link relevant code, documentation, issues, or API
+contracts, and distinguish implemented behavior from planned behavior.
 
-## Boundaries
+## Proposed outcome
 
-Confirm the proposal keeps personal identifiers on the client tier and does not add a paid or cloud API.
+Describe observable behavior or a decision to be made. Implementation details may
+remain open when this is an early RFC.
 
-- [ ] Personal tier stays client-side
-- [ ] Lake tier stores clinical payloads only
-- [ ] Access is OTP or glass-break, and both are audited
+## Scope and non-goals
 
-## Alternatives
+### In scope
 
-What else did you consider?
+-
+
+### Out of scope
+
+-
+
+## Architecture, privacy, and safety
+
+- What data crosses each trust boundary?
+- Does this affect PII, pseudonymous identifiers, access grants, cryptographic keys,
+  authorization, audit events, agent tools, or analytics exports?
+- Where is human review required?
+- Does it introduce a service, network destination, dependency, or platform
+  permission?
+
+## Alternatives and compatibility
+
+What alternatives did you consider? Identify migration, interoperability, and
+cross-repository implications.
+
+## Acceptance criteria
+
+- [ ]
+- [ ]
+
+## Evidence and verification plan
+
+How will contributors demonstrate correctness, privacy, security, accessibility,
+clinical-safety boundaries, or research reproducibility as applicable?

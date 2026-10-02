@@ -1,28 +1,45 @@
 ---
 name: Contribution task
-about: Claim a modular task before you open a pull request
-title: "task: "
+about: Propose or claim a small, independently reviewable unit of work
+title: "[Task] "
 labels: help wanted
 assignees: ""
 ---
 
-## Task
+## Outcome
 
-One sentence a reviewer can accept or reject.
+State one observable result a reviewer can accept or reject.
 
-## Repository
+## Repository and dependency
 
-Name the repository. If it does not exist yet, say which reserved name you intend to start (`datalife-web-portal`, `datalife-mobile-app`, or `datalife-infra-devops`).
+- Target repository:
+- Parent issue, RFC, or milestone:
+- Blocking dependency, if any:
 
-## Done when
+Active repositories are `datalife-datalake-core`, `datalife-mobile-app`,
+`datalife-web-portal`, `datalife-clinical-agents`, and
+`datalife-analytics-downstream`.
 
-- [ ]
-- [ ]
+## Suggested scope
+
+-
 
 ## Out of scope
 
-What will this task deliberately leave untouched?
+-
 
-## Claim
+## Acceptance criteria
 
-Comment after opening the issue. Work starts only after Luchang Jiang assigns it to you. Branch from `main` as `feat/`, `fix/`, or `docs/`.
+- [ ]
+- [ ]
+
+## Test and documentation plan
+
+List the commands, fixtures, platforms, accessibility checks, evaluation cases, or
+documents that will demonstrate completion. Use synthetic data only.
+
+## Ownership
+
+Comment with your intended approach. Work starts after a maintainer assigns the issue;
+a comment alone is not a claim. Framework or boundary changes require an accepted RFC
+before implementation.
