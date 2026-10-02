@@ -56,6 +56,7 @@ sensitive access events in a deterministic, tamper-evident audit chain.
 ## System boundary
 
 ```mermaid
+%%{init: {"flowchart": {"diagramPadding": 32, "nodeSpacing": 48, "rankSpacing": 56}}}%%
 flowchart TB
     Patient[Patient] -.-> Mobile["datalife-mobile-app<br/>foundation scaffold"]
     Clinician[Clinician] -.-> Web["datalife-web-portal<br/>foundation scaffold"]
@@ -75,11 +76,18 @@ flowchart TB
     Analytics["datalife-analytics-downstream<br/>research scaffold"]
     Agents -. "human-reviewed candidate payload" .-> Mobile
     CoreRepo -. "future governed export" .-> Analytics
+
+    Analytics ~~~ ViewerControlSafeArea["viewer controls safe area"]
+    Audit ~~~ ViewerControlSafeArea
+    classDef layoutSpacer fill:transparent,stroke:transparent,color:transparent;
+    class ViewerControlSafeArea layoutSpacer;
 ```
 
 Dashed edges involving peripheral repositories are planned integration boundaries;
 they are not claims that those applications already exist. The core currently has no
-authorized clinical-record retrieval or bulk analytics export API.
+authorized clinical-record retrieval or bulk analytics export API. The blank lower
+margin is intentional: it keeps GitHub's Mermaid viewer controls from covering a
+repository or core component.
 
 ### Normal access
 
@@ -148,10 +156,10 @@ adversarial testing, and operational controls.
 
 | Your interest | Start with |
 |---|---|
-| Web frontend and accessible clinical UX | [Portal application shell](https://github.com/datalife-ehealth/datalife-web-portal/issues/2) or [OTP contract integration](https://github.com/datalife-ehealth/datalife-web-portal/issues/3) |
-| Mobile security and client privacy | [Mobile framework/vault RFC](https://github.com/datalife-ehealth/datalife-mobile-app/issues/1) or [PII isolation tests](https://github.com/datalife-ehealth/datalife-mobile-app/issues/4) |
-| AI, LLMs, and agent safety | [Intake threat-model RFC](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/1) or [synthetic safety corpus](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/4) |
-| Data science and health analytics | [Synthetic-data contract RFC](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/1) or [dataset/study card templates](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/4) |
+| Web frontend and accessible clinical UX | [Portal application shell (#2)](https://github.com/datalife-ehealth/datalife-web-portal/issues/2) or [OTP contract integration (#3)](https://github.com/datalife-ehealth/datalife-web-portal/issues/3) |
+| Mobile security and client privacy | [Mobile framework/vault RFC (#1)](https://github.com/datalife-ehealth/datalife-mobile-app/issues/1) or [PII isolation tests (#4)](https://github.com/datalife-ehealth/datalife-mobile-app/issues/4) |
+| AI, LLMs, and agent safety | [Intake threat-model RFC (#1)](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/1) or [synthetic safety corpus (#4)](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/4) |
+| Data science and health analytics | [Synthetic-data contract RFC (#1)](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/1) or [dataset/study card templates (#4)](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/4) |
 | Backend, APIs, or cryptographic verification | Review the [core code and tests](https://github.com/datalife-ehealth/datalife-datalake-core), then open an issue with a reproduction, contract proposal, or benchmark plan. |
 
 These are entry points, not limits on future work. Acceptance criteria define the
@@ -186,6 +194,10 @@ and [Code of Conduct](https://github.com/datalife-ehealth/.github/blob/main/CODE
   keep architectural rationale in the linked RFC.
 - **Introductions and cross-project questions:** use
   [organization Discussions](https://github.com/datalife-ehealth/.github/discussions).
+- **Time-sensitive coordination:** start in the relevant Issue or Discussion. A
+  maintainer can confirm whether a suitable working-group channel is currently
+  available. Summarize decisions and outcomes back on GitHub so they remain visible
+  to every contributor.
 - **Security or privacy reports:** follow
   [SECURITY.md](https://github.com/datalife-ehealth/.github/blob/main/SECURITY.md);
   never post vulnerabilities, credentials, access grants, or patient data publicly.
