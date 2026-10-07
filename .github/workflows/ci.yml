@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  documentation:
+    name: Organization documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+
+      - name: Lint Markdown
+        run: npx --yes markdownlint-cli2@0.18.1 "**/*.md"
+
+      - name: Verify organization community files
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            README.md
+            profile/README.md
+            profile/logo.png
+            profile/banner.png
+            CODE_OF_CONDUCT.md
+            CONTRIBUTING.md
+            SECURITY.md
+            LICENSE
+            .github/pull_request_template.md
+            .github/ISSUE_TEMPLATE/01_bug_report.md
+            .github/ISSUE_TEMPLATE/02_feature_request.md
+            .github/ISSUE_TEMPLATE/03_contribution_task.md
+            .github/ISSUE_TEMPLATE/config.yml
+          )
+          for path in "${required[@]}"; do
+            test -s "$path" || { echo "Missing or empty required file: $path"; exit 1; }
+          done
