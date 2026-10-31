@@ -19,7 +19,7 @@
 ## Live Coordination and Sprint Backlog
 Track active tracks, claim ready tasks, and follow community progress in real time on our public GitHub Project Board:
 
-👉 **[Open DataLife v0.1 Foundation & Pipelines Roadmap](https://github.com/orgs/datalife-ehealth/projects/1)**
+馃憠 **[Open DataLife v0.1 Foundation & Pipelines Roadmap](https://github.com/orgs/datalife-ehealth/projects/1)**
 
 - **Claim & Onboarding Hub**: Milestone 1 RFCs and architecture discussions for each subsystem.
 - **Ready for Work**: Immediate Sprint 0.1 priority tasks open for contributors.
@@ -171,13 +171,14 @@ status mutations remain a separate GitHub Project permission operation.
 | Issue | Track | Tier | Lifecycle | Dependency rationale |
 |---|---|---|---|---|
 | [analytics #8](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/8) | Analytics & ML | Active | Ready for Work | Extends the landed leakage-safe baseline with subject-stratified validation. |
-| [datalake-core #12](https://github.com/datalife-ehealth/datalake-core/issues/12) | NLP & Safety | Active | Ready for Work | Bounds expired grant memory before further authorization integrations. |
+| [datalake-core #12](https://github.com/datalife-ehealth/datalife-datalake-core/issues/12) | NLP & Safety | Active | Ready for Work | Bounds expired grant memory before further authorization integrations. |
 | [clinical-agents #7](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/7) | NLP & Safety | Active | Ready for Work | Establishes deny-by-default typed tool isolation before trace work. |
 | [web-portal #7](https://github.com/datalife-ehealth/datalife-web-portal/issues/7) | DevOps & CI | Active | Ready for Work | Adds browser security headers before live access-grant flows. |
 | [analytics #9](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/9) | Analytics & ML | Active | Sequential Backlog | Compares future baseline reports after #8 stabilizes evaluation folds. |
 | [analytics #1](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/1) | Analytics & ML | Active | Sequential Backlog | Governs contract/version decisions behind all downstream analytics. |
 | [analytics #4](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/4) | Analytics & ML | Active | Sequential Backlog | Documents datasets and results once contract and baseline outputs settle. |
-| [datalake-core #13](https://github.com/datalife-ehealth/datalake-core/issues/13) | Analytics & ML | Active | Sequential Backlog | Defines a governed read-only export boundary for downstream consumers. |
+| [datalake-core #13](https://github.com/datalife-ehealth/datalife-datalake-core/issues/13) | Analytics & ML | Active | Sequential Backlog | Defines a governed read-only export boundary for downstream consumers. |
+| [datalake-core #14](https://github.com/datalife-ehealth/datalife-datalake-core/issues/14) | NLP & Safety / Core Infra | Active | Onboarding / RFC Hub | Aligns contributors on zero-cloud PII, server-authoritative grants, Merkle audit boundaries, and offline gates. |
 | [datalake-core #4](https://github.com/datalife-ehealth/datalake-core/issues/4) | NLP & Safety | Active | Sequential Backlog | Adds OTP-scoped audit filtering after core access semantics are bounded. |
 | [clinical-agents #8](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/8) | NLP & Safety | Active | Sequential Backlog | Serializes redacted traces after #7 defines safe invocation events. |
 | [clinical-agents #1](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/1) | NLP & Safety | Active | Sequential Backlog | Threat model and workflow scope precede executable agent boundaries. |
