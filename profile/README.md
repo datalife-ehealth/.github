@@ -19,7 +19,7 @@
 ## Live Coordination and Sprint Backlog
 Track active tracks, claim ready tasks, and follow community progress in real time on our public GitHub Project Board:
 
-馃憠 **[Open DataLife v0.1 Foundation & Pipelines Roadmap](https://github.com/orgs/datalife-ehealth/projects/1)**
+👉 **[Open DataLife v0.1 Foundation & Pipelines Roadmap](https://github.com/orgs/datalife-ehealth/projects/1)**
 
 - **Claim & Onboarding Hub**: Milestone 1 RFCs and architecture discussions for each subsystem.
 - **Ready for Work**: Immediate Sprint 0.1 priority tasks open for contributors.
