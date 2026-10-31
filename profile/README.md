@@ -45,6 +45,79 @@ DataLife repositories are reference software, research scaffolds, and policy aid
 They are not a certified EHR, medical device, diagnostic service, treatment system,
 or emergency-response platform.
 
+## System architecture
+
+```mermaid
+%%{init: {"flowchart": {"diagramPadding": 32, "nodeSpacing": 48, "rankSpacing": 56}}}%%
+flowchart TB
+    Patient[Patient] -.-> Mobile["datalife-mobile-app<br/>foundation scaffold"]
+    Clinician[Clinician] -.-> Web["datalife-web-portal<br/>foundation scaffold"]
+
+    subgraph CoreRepo["datalife-datalake-core - reference prototype"]
+        Ingest[Ingestion boundary]
+        Grants[Grant and glass-break service]
+        Audit[Chained Merkle audit]
+        Grants --> Audit
+    end
+
+    Mobile -. "approved payload + opaque subject_key" .-> Ingest
+    Mobile -. "request server-issued grant" .-> Grants
+    Web -. "validate grant / glass-break / verify" .-> CoreRepo
+
+    Agents["datalife-clinical-agents<br/>research scaffold"]
+    Analytics["datalife-analytics-downstream<br/>research pipeline"]
+    Agents -. "human-reviewed candidate payload" .-> Mobile
+    CoreRepo -. "future governed export" .-> Analytics
+
+    Analytics ~~~ ViewerControlSafeArea["viewer controls safe area"]
+    Audit ~~~ ViewerControlSafeArea
+    classDef layoutSpacer fill:transparent,stroke:transparent,color:transparent;
+    class ViewerControlSafeArea layoutSpacer;
+```
+
+Dashed edges are planned integration boundaries; they are not claims that the
+peripheral applications already exist. The core currently has no authorized
+clinical-record retrieval or bulk analytics export API. The blank lower margin is
+intentional so GitHub's Mermaid viewer controls do not cover a repository or core
+component.
+
+### Normal access flow
+
+The core prototype can issue a time-bounded grant for an opaque subject and intended
+physician, then validate that grant for a clinician-side client. The server remains
+authoritative for validity and expiry; peripheral clients cannot self-authorize.
+
+### Emergency access flow
+
+The glass-break prototype checks a configured physician identifier, requires a
+reason, appends an `UNCONFIRMED` event to the Merkle chain, and returns a short-lived
+grant. It does **not** yet provide record retrieval, patient ratification/dispute,
+durable audit persistence, or a production physician-identity system.
+
+## Architectural invariants
+
+Implementations may evolve, but these constraints do not change without an explicit
+RFC and threat-model review:
+
+- **Patient sovereignty.** Names, government identifiers, phone numbers, email
+  addresses, emergency contacts, and identity mappings stay in the patient-
+  controlled tier.
+- **Zero-cloud PII.** Central services must not accept, retain, log, or replicate
+  direct identity records. An opaque `subject_key` is still sensitive pseudonymous
+  data, not anonymous or public data.
+- **Server-authoritative access.** The core issues and validates ephemeral grants. A
+  mobile app, web UI, model, or analytics job cannot grant itself access.
+- **Tamper evidence, not blockchain.** Audit events use chained SHA-256 Merkle roots
+  inside one administrative boundary. There is no token, miner, gas fee, consensus
+  protocol, or peer-to-peer ledger.
+- **Human authority over automation.** Agent output is untrusted and requires typed
+  boundaries, deterministic validation, safe abstention, and human review before an
+  external write.
+- **Local-first and vendor-neutral.** The default development and test path must not
+  require a paid API or proprietary EHR/cloud dependency.
+- **Synthetic data by default.** Source, tests, issues, screenshots, demos, and
+  research fixtures must not contain real patient information.
+
 ## Current reality
 
 ### Analytics and ML reality
