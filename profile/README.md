@@ -163,7 +163,7 @@ planning lane; Project 1 status mutations remain a separate GitHub Project
 permission operation.
 
 | Issue | Track | Tier | Lifecycle | Dependency rationale |
-|---|---|---|---|---|
+| :--- | :--- | :--- | :--- | :--- |
 | [analytics #8](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/8) | Analytics & ML | Active | Ready for Work | Extends the landed leakage-safe baseline with subject-stratified validation. |
 | [datalake-core #12](https://github.com/datalife-ehealth/datalife-datalake-core/issues/12) | NLP & Safety | Active | Ready for Work | Bounds expired grant memory before further authorization integrations. |
 | [clinical-agents #7](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/7) | NLP & Safety | Active | Ready for Work | Establishes deny-by-default typed tool isolation before trace work. |
