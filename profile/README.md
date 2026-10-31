@@ -5,216 +5,164 @@
 <h1 align="center">DataLife e-Health</h1>
 
 <p align="center">
-  <strong>Patient-sovereign, zero-cloud-PII architecture for heterogeneous health records</strong><br>
-  Local identity custody · Ephemeral access grants · Tamper-evident Merkle audit chains
+  <strong>Patient-sovereign, local-first architecture for privacy-conscious health-data research</strong><br>
+  Governed contracts 路 Server-authoritative access 路 Reproducible safety evaluation
 </p>
 
 <p align="center">
-  <a href="https://github.com/datalife-ehealth/datalife-datalake-core/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-0b7285.svg?style=flat-square" alt="MIT License"></a>
-  <a href="#architectural-invariants"><img src="https://img.shields.io/badge/privacy-zero--cloud--PII-7048e8.svg?style=flat-square" alt="Zero-cloud-PII"></a>
-  <a href="#current-reality"><img src="https://img.shields.io/badge/audit-Merkle%20chain-1971c2.svg?style=flat-square" alt="Tamper-evident Merkle chain"></a>
-  <a href="#system-boundary"><img src="https://img.shields.io/badge/architecture-local--first-2f9e44.svg?style=flat-square" alt="Local-first architecture"></a>
-  <a href="#how-to-contribute"><img src="https://img.shields.io/badge/workflow-RFC--first-f08c00.svg?style=flat-square" alt="RFC-first workflow"></a>
+  <a href="https://github.com/datalife-ehealth/.github/milestones"><img src="https://img.shields.io/badge/status-v0.1.0--alpha-f59f00.svg?style=flat-square" alt="v0.1.0-alpha"></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11%2B-3776ab.svg?style=flat-square" alt="Python 3.11 or newer"></a>
+  <a href="https://github.com/datalife-ehealth/.github/actions/workflows/ci.yml"><img src="https://github.com/datalife-ehealth/.github/actions/workflows/ci.yml/badge.svg" alt="Organization CI"></a>
+  <a href="https://github.com/datalife-ehealth/.github/discussions"><img src="https://img.shields.io/badge/contributor%20hub-GitHub%20Discussions-2ea44f.svg?style=flat-square" alt="Contributor Hub"></a>
 </p>
 
+> ### Live Coordination and Sprint Backlog
+> Track active tracks, claim ready tasks, and follow community progress in real time:
+> **[Open the DataLife v0.1 Projects and Roadmap](https://github.com/orgs/datalife-ehealth/projects)**
+>
+> The board-specific URL is pending GitHub Project API access for this maintenance
+> update. The organization Projects page is the verified public gateway until that
+> URL is available.
+
 <p align="center">
-  <a href="#mission">Mission</a> ·
-  <a href="#repository-ecosystem">Ecosystem</a> ·
-  <a href="#current-reality">Current reality</a> ·
-  <a href="#find-your-interest">Start here</a> ·
-  <a href="#how-to-contribute">Contribute</a> ·
-  <a href="https://github.com/datalife-ehealth/.github/discussions">Discussions</a>
+  <a href="#current-reality">Current reality</a> 路
+  <a href="#repository-matrix">Repository matrix</a> 路
+  <a href="#contribution-tracks">Contribution tracks</a> 路
+  <a href="#onboarding">Onboarding</a> 路
+  <a href="#guardrails">Guardrails</a>
 </p>
 
 ---
 
 ## Mission
 
-DataLife e-Health explores an open architecture that separates **who a person is**
-from the **clinical observations used in care and research**.
+DataLife explores open, privacy-conscious architecture that separates who a person
+is from the clinical observations used in care and research. The patient-controlled
+tier keeps direct identity data and the identity-to-subject mapping local. Service
+components accept only governed, opaque subject keys and approved payloads.
 
-The patient-controlled tier keeps direct identity data and the identity-to-subject
-mapping on the user's device. The service tier accepts only an opaque `subject_key`
-and approved clinical payloads, issues time-bounded access grants, and records
-sensitive access events in a deterministic, tamper-evident audit chain.
-
-> [!IMPORTANT]
-> This organization publishes reference software and research scaffolds. It is not a
-> certified EHR, medical device, diagnostic service, hospital billing system, or
-> emergency-response system.
-
-### One-minute orientation
-
-| Question | Answer |
-|---|---|
-| What runs today? | A Python/FastAPI core reference prototype with ingestion, access-grant, glass-break, and Merkle verification primitives. |
-| What is being designed? | Mobile, web, clinical-agent, and analytics foundations, each with an open `v0.1 - Foundation` milestone. |
-| Where are decisions recorded? | In the relevant repository's RFC and task Issues; GitHub is the source of truth. |
-| What never belongs in the cloud tier? | Direct identity records or the mapping between identity and `subject_key`. |
-| What is the fastest way to help? | Pick an issue below, leave a short approach comment, and wait for maintainer assignment before substantial coding. |
-
-## System boundary
-
-```mermaid
-%%{init: {"flowchart": {"diagramPadding": 32, "nodeSpacing": 48, "rankSpacing": 56}}}%%
-flowchart TB
-    Patient[Patient] -.-> Mobile["datalife-mobile-app<br/>foundation scaffold"]
-    Clinician[Clinician] -.-> Web["datalife-web-portal<br/>foundation scaffold"]
-
-    subgraph CoreRepo["datalife-datalake-core · reference prototype"]
-        Ingest[Ingestion boundary]
-        Grants[Grant and glass-break service]
-        Audit[Chained Merkle audit]
-        Grants --> Audit
-    end
-
-    Mobile -. "approved payload + opaque subject_key" .-> Ingest
-    Mobile -. "request server-issued grant" .-> Grants
-    Web -. "validate grant / glass-break / verify" .-> CoreRepo
-
-    Agents["datalife-clinical-agents<br/>research scaffold"]
-    Analytics["datalife-analytics-downstream<br/>research scaffold"]
-    Agents -. "human-reviewed candidate payload" .-> Mobile
-    CoreRepo -. "future governed export" .-> Analytics
-
-    Analytics ~~~ ViewerControlSafeArea["viewer controls safe area"]
-    Audit ~~~ ViewerControlSafeArea
-    classDef layoutSpacer fill:transparent,stroke:transparent,color:transparent;
-    class ViewerControlSafeArea layoutSpacer;
-```
-
-Dashed edges involving peripheral repositories are planned integration boundaries;
-they are not claims that those applications already exist. The core currently has no
-authorized clinical-record retrieval or bulk analytics export API. The blank lower
-margin is intentional: it keeps GitHub's Mermaid viewer controls from covering a
-repository or core component.
-
-### Normal access
-
-The core prototype can issue a time-bounded grant for an opaque subject and intended
-physician, then validate that grant for a clinician-side client. The server remains
-authoritative for validity and expiry; peripheral clients cannot self-authorize.
-
-### Emergency access
-
-The glass-break prototype checks a configured physician identifier, requires a
-reason, appends an `UNCONFIRMED` event to the Merkle chain, and returns a short-lived
-grant. It does **not** yet provide record retrieval, patient ratification/dispute,
-durable audit persistence, or a production physician-identity system.
-
-## Architectural invariants
-
-Implementations may evolve, but these constraints do not change without an explicit
-RFC and threat-model review:
-
-- **Patient sovereignty.** Names, CPF or other government identifiers, phone numbers,
-  email addresses, emergency contacts, and identity mappings stay in the
-  patient-controlled tier.
-- **Zero-cloud-PII.** Central services must not accept, retain, log, or replicate
-  direct identity records. An opaque `subject_key` is still sensitive pseudonymous
-  data—not anonymous or public data.
-- **Server-authoritative access.** The core issues and validates ephemeral grants. A
-  mobile app, web UI, model, or analytics job cannot grant itself access.
-- **Tamper evidence, not blockchain.** Audit events use chained SHA-256 Merkle roots
-  inside one administrative boundary. There is no token, miner, gas fee, consensus
-  protocol, or peer-to-peer ledger.
-- **Human authority over automation.** Agent output is untrusted and requires typed
-  boundaries, deterministic validation, safe abstention, and human review before an
-  external write.
-- **Local-first and vendor-neutral.** The default development and test path must not
-  require a paid API or proprietary EHR/cloud dependency.
-- **Synthetic data by default.** Source, tests, issues, screenshots, demos, and
-  research fixtures must not contain real patient information.
-
-## Repository ecosystem
-
-| Repository | Maturity | Owns | Stack | Active track |
-|---|---|---|---|---|
-| [`datalife-datalake-core`](https://github.com/datalife-ehealth/datalife-datalake-core) | **Reference prototype** | Ingestion boundary, server-issued grants, glass-break primitive, relational models, and Merkle verification. | Python 3.11+, FastAPI, Pydantic, SQLAlchemy; PostgreSQL deployment target | Persistence integration, contract hardening, parser tests, benchmarks, and security review. [Propose focused work](https://github.com/datalife-ehealth/datalife-datalake-core/issues/new/choose). |
-| [`datalife-mobile-app`](https://github.com/datalife-ehealth/datalife-mobile-app) | **Foundation scaffold** | Patient-controlled PII vault, on-device key custody, consent UX, and ephemeral grant display. | Framework pending: Flutter, React Native, or a justified alternative | [`v0.1 - Foundation`](https://github.com/datalife-ehealth/datalife-mobile-app/milestone/1): framework and vault threat model. |
-| [`datalife-web-portal`](https://github.com/datalife-ehealth/datalife-web-portal) | **Foundation scaffold** | Accessible clinician console for grant validation, glass-break request UX, and audit verification. | Proposed TypeScript, React/Next.js, and Tailwind; RFC may refine this | [`v0.1 - Foundation`](https://github.com/datalife-ehealth/datalife-web-portal/milestone/1): application shell and validation contract. |
-| [`datalife-clinical-agents`](https://github.com/datalife-ehealth/datalife-clinical-agents) | **Research scaffold** | Human-reviewed structured intake and provider-neutral agent safety evaluation. | Proposed Python, Pydantic, and typed model/tool adapters; no framework selected | [`v0.1 - Foundation`](https://github.com/datalife-ehealth/datalife-clinical-agents/milestone/1): threat model, state machine, and adversarial evaluation. |
-| [`datalife-analytics-downstream`](https://github.com/datalife-ehealth/datalife-analytics-downstream) | **Research scaffold** | Synthetic longitudinal fixtures, reproducible baselines, and future aggregate research views. | Proposed Python, pandas/Polars, PyArrow, scikit-learn/statsmodels; UI optional | [`v0.1 - Foundation`](https://github.com/datalife-ehealth/datalife-analytics-downstream/milestone/1): data contract, generator, and leakage-safe baseline. |
-
-**Maturity matters:** only the core contains runnable product code today. The four
-peripheral repositories currently contain governance, architecture boundaries, and
-scoped Issues—not a selected or installed application stack.
+DataLife repositories are reference software, research scaffolds, and policy aids.
+They are not a certified EHR, medical device, diagnostic service, treatment system,
+or emergency-response platform.
 
 ## Current reality
 
-| State | Verified scope |
-|---|---|
-| **Implemented in the core** | `/health`, OpenAPI docs, prototype JSON/XML/DICOM-body ingestion, server-side grant issue/validation, configured-physician glass-break, deterministic Merkle verification, and four unit tests. |
-| **Structured but not fully wired** | SQLAlchemy relational models and PostgreSQL deployment configuration exist, while prototype ingestion, grants, and audit state remain in process memory. |
-| **Not implemented** | Authorized record retrieval/decryption, durable runtime persistence, grant revocation, patient ratification/dispute, identity recovery, key rotation, and governed bulk analytics export. |
+### Analytics and ML reality
 
-Basic identifier rejection in a prototype is not proof of anonymization. Production
-privacy requires structural validation, policy enforcement, durable audit storage,
-adversarial testing, and operational controls.
+`datalife-analytics-downstream` now contains the landed v0.1.0 leakage-safe baseline
+pipeline from PR #7. It validates the synthetic contract before fitting, uses
+train-only median imputation, isolates subjects across splits, and checks forward
+time leakage both in memory and against source tables before the ridge-logistic fit.
+The output includes a naive prevalence comparator, lineage, limitations, and
+reproducible metrics. The next scoped tasks are [#8 subject-stratified K-fold
+validation](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/8)
+and [#9 baseline-diff regression checks](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/9).
 
-## Find your interest
+### Core and safety
 
-| Your interest | Start with |
-|---|---|
-| Web frontend and accessible clinical UX | [Portal application shell (#2)](https://github.com/datalife-ehealth/datalife-web-portal/issues/2) or [OTP contract integration (#3)](https://github.com/datalife-ehealth/datalife-web-portal/issues/3) |
-| Mobile security and client privacy | [Mobile framework/vault RFC (#1)](https://github.com/datalife-ehealth/datalife-mobile-app/issues/1) or [PII isolation tests (#4)](https://github.com/datalife-ehealth/datalife-mobile-app/issues/4) |
-| AI, LLMs, and agent safety | [Intake threat-model RFC (#1)](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/1) or [synthetic safety corpus (#4)](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/4) |
-| Data science and health analytics | [Synthetic-data contract RFC (#1)](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/1) or [dataset/study card templates (#4)](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/4) |
-| Backend, APIs, or cryptographic verification | Review the [core code and tests](https://github.com/datalife-ehealth/datalife-datalake-core), then open an issue with a reproduction, contract proposal, or benchmark plan. |
+`datalife-datalake-core` is the runnable Python/FastAPI reference prototype for
+strict parsing, contextual PII rejection, server-issued grants, glass-break policy,
+and chained Merkle verification. SQLAlchemy models and PostgreSQL deployment
+configuration exist, but durable runtime persistence and governed bulk export are
+not complete. The next tasks are [#12 bounded expiry-aware access-grant
+storage](https://github.com/datalife-ehealth/datalife-datalake-core/issues/12) and
+[#13 a versioned read-only analytics export
+contract](https://github.com/datalife-ehealth/datalife-datalake-core/issues/13).
 
-These are entry points, not limits on future work. Acceptance criteria define the
-minimum safe result while leaving room for well-justified designs and extensions.
+`datalife-clinical-agents` remains a research scaffold. Draft PR #6 proposes a
+standard-library Unicode policy helper using NFKC normalization, case folding, a
+narrow U+200B removal rule, bounded inputs, and exceptions that do not echo text;
+it is not a merged agent runtime. The next safety tasks are [#7 the deny-by-default
+typed tool envelope](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/7)
+and [#8 the redacted execution-trace
+contract](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/8).
 
-## How to contribute
+### Web and mobile
 
-We use a lightweight **RFC-first** workflow for frameworks, schemas, APIs, trust
-boundaries, clinical workflows, agent tools, and cross-repository changes.
+`datalife-web-portal` has a landed accessible Next.js shell, but no live clinical
+workflow or grant-validation service. [#7](https://github.com/datalife-ehealth/datalife-web-portal/issues/7)
+defines the offline security-header baseline; [#8](https://github.com/datalife-ehealth/datalife-web-portal/issues/8)
+defines redacted client error states before an API is wired.
 
-1. **Pick the right issue.** Read the repository README and current milestone, then
-   choose an existing task or open a focused proposal.
-2. **Leave a short alignment comment before coding.** Three to five bullets are
-   enough for an initial discussion:
-   - the component or subtask you want to address;
-   - the observable outcome and what stays out of scope;
-   - your proposed tool, state flow, interface, schema, or threat mitigation;
-   - the synthetic tests or other evidence you will provide.
-3. **Wait for assignment.** A maintainer confirms alignment and assigns the issue. A
-   comment alone is not a claim.
-4. **Build and demonstrate.** Branch from `main` with `feat/`, `fix/`, `docs/`,
-   `test/`, or `chore/`; submit one focused pull request with verification evidence.
+`datalife-mobile-app` is framework-neutral and has no application runtime yet. [#6](https://github.com/datalife-ehealth/datalife-mobile-app/issues/6)
+scaffolds a vault boundary and offline test gate without choosing Flutter, React
+Native, or a platform key implementation.
 
-Larger decisions need a full RFC discussion, but contributors do not need a long
-design document merely to start a conversation. See the complete
-[contribution guide](https://github.com/datalife-ehealth/.github/blob/main/CONTRIBUTING.md)
-and [Code of Conduct](https://github.com/datalife-ehealth/.github/blob/main/CODE_OF_CONDUCT.md).
+## Repository matrix
 
-## Community and governance
+| Repository | Active focus and maturity | Current stack | Roadmap issues |
+|---|---|---|---|
+| [`datalife-analytics-downstream`](https://github.com/datalife-ehealth/datalife-analytics-downstream) | Implemented synthetic contract, fixture generator, and leakage-safe baseline | Python 3.11+, NumPy, pandas, PyArrow, pytest, Ruff | [#8 K-fold validation](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/8) (Ready for Work); [#9 baseline diff](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/9) (Backlog) |
+| [`datalife-datalake-core`](https://github.com/datalife-ehealth/datalife-datalake-core) | Runnable reference API; durable persistence and export remain incomplete | Python 3.11+, FastAPI, Pydantic, SQLAlchemy, PostgreSQL target | [#12 grant memory bounds](https://github.com/datalife-ehealth/datalife-datalake-core/issues/12) (Ready for Work); [#13 export contract](https://github.com/datalife-ehealth/datalife-datalake-core/issues/13) (Backlog) |
+| [`datalife-web-portal`](https://github.com/datalife-ehealth/datalife-web-portal) | Landed accessible UI shell; workflow integration is not live | TypeScript, React 19, Next.js 15, Vitest | [#7 security headers](https://github.com/datalife-ehealth/datalife-web-portal/issues/7) (Ready for Work); [#8 redacted errors](https://github.com/datalife-ehealth/datalife-web-portal/issues/8) (Backlog) |
+| [`datalife-clinical-agents`](https://github.com/datalife-ehealth/datalife-clinical-agents) | Research scaffold with a draft Unicode-policy PR | Python 3.11+ direction; standard-library safety helpers; provider-neutral design | [#7 typed tool envelope](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/7) (Ready for Work); [#8 redacted trace](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/8) (Backlog) |
+| [`datalife-mobile-app`](https://github.com/datalife-ehealth/datalife-mobile-app) | Framework-neutral foundation scaffold | Framework pending; offline contract tests first | [#6 vault boundary](https://github.com/datalife-ehealth/datalife-mobile-app/issues/6) (Backlog) |
+| [`.github`](https://github.com/datalife-ehealth/.github) | Organization templates, policies, and RFC-first governance | Markdown, GitHub Actions, pinned action revisions | [#1 roadmap metadata](https://github.com/datalife-ehealth/.github/issues/1) (Backlog) |
 
-- **Scoped work and technical decisions:** use the relevant repository's Issues and
-  keep architectural rationale in the linked RFC.
-- **Introductions and cross-project questions:** use
-  [organization Discussions](https://github.com/datalife-ehealth/.github/discussions).
-- **Time-sensitive coordination:** start in the relevant Issue or Discussion. A
-  maintainer can confirm whether a suitable working-group channel is currently
-  available. Summarize decisions and outcomes back on GitHub so they remain visible
-  to every contributor.
-- **Security or privacy reports:** follow
-  [SECURITY.md](https://github.com/datalife-ehealth/.github/blob/main/SECURITY.md);
-  never post vulnerabilities, credentials, access grants, or patient data publicly.
-- **DemocracyLab participants:** introduce yourself in Discussions with your GitHub
-  handle and interests. GitHub remains the source of truth for scope, assignment,
-  decisions, and review.
-- **Governance:** organization-wide templates and policies live in
-  [`datalife-ehealth/.github`](https://github.com/datalife-ehealth/.github).
+## Contribution tracks
 
-## Project boundaries
+### Analytics and ML
 
-- No real patient data in public repositories or community channels.
-- No medical advice, diagnosis, prescribing, treatment selection, or emergency use.
-- No mandatory paid service in the default development or test path.
-- No hidden telemetry, undisclosed network calls, or cloud replication of direct PII.
-- No production, regulatory, security, privacy, or clinical-validity claim without
-  corresponding evidence and governance review.
+Work on synthetic longitudinal distributions, subject-level isolation, forward-time
+leakage checks, reproducible metrics, calibration, subgroup evaluation, and report
+lineage. Analytics remains read-only and must not scrape transactional internals.
+
+### NLP and safety
+
+Work on deterministic Unicode and confusable/control-character policy aids, typed
+tool boundaries, redacted execution traces, adversarial fixtures, and human-review
+transitions. Model output is untrusted data and cannot grant privileges.
+
+### DevOps and infrastructure
+
+Work on browser security headers, offline CI gates, reproducible development
+environments, and the mobile vault boundary. Do not add hidden network calls,
+mandatory paid services, or credentials to the default test path.
+
+### Docs and governance
+
+Work on RFC-first workflows, schema/versioning conventions, issue metadata,
+contributor onboarding, and cross-repository decision records.
+
+## Onboarding
+
+1. **Find a scoped task.** Open the [DataLife Projects and Roadmap](https://github.com/orgs/datalife-ehealth/projects),
+   filter for `Ready for Work`, or choose a `good first issue`.
+2. **Align before coding.** Comment on the issue with the approach, observable
+   outcome, out-of-scope behavior, and synthetic verification plan. Write
+   `I'd like to claim this issue!` only as an expression of interest; a maintainer
+   assigns the task explicitly.
+3. **Build offline and submit a draft PR.** Branch from `main` using `feat/`,
+   `fix/`, `docs/`, `test/`, or `chore/`; link the issue; include exact checks and
+   keep the default path credential-free and network-independent.
+
+## Guardrails
+
+- Use synthetic or explicitly licensed de-identified data only. Never put real
+  patient information, identity mappings, access grants, or credentials in source,
+  issues, screenshots, fixtures, or pull requests.
+- Treat opaque subject keys as sensitive pseudonymous data, not anonymous data.
+- Keep direct identity fields in the patient-controlled tier. Central services must
+  reject, avoid logging, and avoid replicating direct PII.
+- Keep server-side authorization authoritative. A mobile app, web UI, model, or
+  analytics job cannot self-issue or self-validate access.
+- Treat chained Merkle audit evidence as tamper evidence, not a blockchain.
+- Keep standard-library or zero-dependency boundaries where a repository requires
+  them. Other repositories must pin and document dependencies; tests must run
+  offline without credentials or paid APIs.
+- These pipelines are research baselines and policy-evaluation aids on synthetic
+  longitudinal distributions. They are explicitly **not** clinical diagnoses,
+  treatment recommendations, triage, operational healthcare signals, or emergency
+  services.
+
+## Community and security
+
+- Scoped technical work belongs in repository Issues and pull requests.
+- Cross-project introductions and questions belong in
+  [GitHub Discussions](https://github.com/datalife-ehealth/.github/discussions).
+- Report vulnerabilities, PII leaks, unsafe agent actions, or exposed credentials
+  through [SECURITY.md](https://github.com/datalife-ehealth/.github/blob/main/SECURITY.md),
+  never in a public issue.
 
 ---
 
