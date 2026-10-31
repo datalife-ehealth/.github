@@ -18,7 +18,7 @@
 
 > ### Live Coordination and Sprint Backlog
 > Track active tracks, claim ready tasks, and follow community progress in real time:
-> **[Open the DataLife v0.1 Projects and Roadmap](https://github.com/orgs/datalife-ehealth/projects)**
+> **[Open the DataLife v0.1 Projects and Roadmap](https://github.com/orgs/datalife-ehealth/projects/1)**
 >
 > The board-specific URL is pending GitHub Project API access for this maintenance
 > update. The organization Projects page is the verified public gateway until that
@@ -199,7 +199,7 @@ contributor onboarding, and cross-repository decision records.
 
 ## Onboarding
 
-1. **Find a scoped task.** Open the [DataLife Projects and Roadmap](https://github.com/orgs/datalife-ehealth/projects),
+1. **Find a scoped task.** Open the [DataLife Projects and Roadmap](https://github.com/orgs/datalife-ehealth/projects/1),
    filter for `Ready for Work`, or choose a `good first issue`.
 2. **Align before coding.** Comment on the issue with the approach, observable
    outcome, out-of-scope behavior, and synthetic verification plan. Write
