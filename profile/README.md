@@ -134,19 +134,7 @@ and [#9 baseline-diff regression checks](https://github.com/datalife-ehealth/dat
 
 ### Core and safety
 
-`datalife-datalake-core` is the runnable Python/FastAPI reference prototype for
-strict parsing, contextual PII rejection, server-issued grants, glass-break policy,
-and chained Merkle verification. SQLAlchemy models and PostgreSQL deployment
-configuration exist, but durable runtime persistence and governed bulk export are
-not complete. The next tasks are [#12 bounded expiry-aware access-grant
-storage](https://github.com/datalife-ehealth/datalife-datalake-core/issues/12) and
-[#13 a versioned read-only analytics export
-contract](https://github.com/datalife-ehealth/datalife-datalake-core/issues/13).
-
-Architecture alignment and contribution claims are coordinated in
-[#14](https://github.com/datalife-ehealth/datalife-datalake-core/issues/14). The
-next tasks are #12 bounded expiry-aware access-grant storage and #13 a versioned
-read-only analytics export contract.
+datalife-datalake-core is the runnable Python/FastAPI reference prototype for strict parsing, contextual PII rejection, server-issued grants, glass-break policy, and chained Merkle verification. SQLAlchemy models and PostgreSQL deployment configuration exist, but durable runtime persistence and governed bulk export are not complete. Architecture alignment and contribution claims are coordinated in [#14](https://github.com/datalife-ehealth/datalife-datalake-core/issues/14). The next tasks are [#12 bounded expiry-aware access-grant storage](https://github.com/datalife-ehealth/datalife-datalake-core/issues/12) and [#13 a versioned read-only analytics export contract](https://github.com/datalife-ehealth/datalife-datalake-core/issues/13).
 
 `datalife-clinical-agents` remains a research scaffold. Draft PR #6 proposes a
 standard-library Unicode policy helper using NFKC normalization, case folding, a
