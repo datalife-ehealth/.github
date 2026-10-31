@@ -16,14 +16,15 @@
   <a href="https://github.com/datalife-ehealth/.github/discussions"><img src="https://img.shields.io/badge/contributor%20hub-GitHub%20Discussions-2ea44f.svg?style=flat-square" alt="Contributor Hub"></a>
 </p>
 
-> ### Live Coordination and Sprint Backlog
-> Track active tracks, claim ready tasks, and follow community progress in real time:
-> **[Open the DataLife v0.1 Projects and Roadmap](https://github.com/orgs/datalife-ehealth/projects/1)**
->
-> The board-specific URL is pending GitHub Project API access for this maintenance
-> update. The organization Projects page is the verified public gateway until that
-> URL is available.
+## Live Coordination and Sprint Backlog
+Track active tracks, claim ready tasks, and follow community progress in real time on our public GitHub Project Board:
 
+👉 **[Open DataLife v0.1 Foundation & Pipelines Roadmap](https://github.com/orgs/datalife-ehealth/projects/1)**
+
+- **Claim & Onboarding Hub**: Milestone 1 RFCs and architecture discussions for each subsystem.
+- **Ready for Work**: Immediate Sprint 0.1 priority tasks open for contributors.
+- **In Progress**: Active implementations currently underway.
+- **Sequential Backlog**: Governed roadmap items sequenced by technical dependencies.
 <p align="center">
   <a href="#current-reality">Current reality</a> |
   <a href="#repository-matrix">Repository matrix</a> |
