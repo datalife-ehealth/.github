@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Patient-sovereign, local-first architecture for privacy-conscious health-data research</strong><br>
-  Governed contracts 路 Server-authoritative access 路 Reproducible safety evaluation
+  Governed contracts | Server-authoritative access | Reproducible safety evaluation
 </p>
 
 <p align="center">
@@ -25,10 +25,10 @@
 > URL is available.
 
 <p align="center">
-  <a href="#current-reality">Current reality</a> 路
-  <a href="#repository-matrix">Repository matrix</a> 路
-  <a href="#contribution-tracks">Contribution tracks</a> 路
-  <a href="#onboarding">Onboarding</a> 路
+  <a href="#current-reality">Current reality</a> |
+  <a href="#repository-matrix">Repository matrix</a> |
+  <a href="#contribution-tracks">Contribution tracks</a> |
+  <a href="#onboarding">Onboarding</a> |
   <a href="#guardrails">Guardrails</a>
 </p>
 
@@ -242,3 +242,5 @@ contributor onboarding, and cross-repository decision records.
 <p align="center">
   <em>Open reference architecture for patient sovereignty, auditable access, and reproducible health-data research.</em>
 </p>
+
+
