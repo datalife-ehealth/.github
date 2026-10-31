@@ -143,6 +143,11 @@ storage](https://github.com/datalife-ehealth/datalife-datalake-core/issues/12) a
 [#13 a versioned read-only analytics export
 contract](https://github.com/datalife-ehealth/datalife-datalake-core/issues/13).
 
+Architecture alignment and contribution claims are coordinated in
+[#14](https://github.com/datalife-ehealth/datalife-datalake-core/issues/14). The
+next tasks are #12 bounded expiry-aware access-grant storage and #13 a versioned
+read-only analytics export contract.
+
 `datalife-clinical-agents` remains a research scaffold. Draft PR #6 proposes a
 standard-library Unicode policy helper using NFKC normalization, case folding, a
 narrow U+200B removal rule, bounded inputs, and exceptions that do not echo text;
@@ -164,9 +169,10 @@ Native, or a platform key implementation.
 
 ## Repository matrix
 
-The matrix below is the complete 27-issue roadmap: four Sprint 0.1 focus items and
-23 sequential backlog items. `Lifecycle` is the intended planning lane; Project 1
-status mutations remain a separate GitHub Project permission operation.
+The matrix below is the complete 28-issue roadmap: four Sprint 0.1 focus items,
+23 sequential backlog items, and one core alignment hub. Lifecycle is the intended
+planning lane; Project 1 status mutations remain a separate GitHub Project
+permission operation.
 
 | Issue | Track | Tier | Lifecycle | Dependency rationale |
 |---|---|---|---|---|
@@ -179,7 +185,7 @@ status mutations remain a separate GitHub Project permission operation.
 | [analytics #4](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/4) | Analytics & ML | Active | Sequential Backlog | Documents datasets and results once contract and baseline outputs settle. |
 | [datalake-core #13](https://github.com/datalife-ehealth/datalife-datalake-core/issues/13) | Analytics & ML | Active | Sequential Backlog | Defines a governed read-only export boundary for downstream consumers. |
 | [datalake-core #14](https://github.com/datalife-ehealth/datalife-datalake-core/issues/14) | NLP & Safety / Core Infra | Active | Onboarding / RFC Hub | Aligns contributors on zero-cloud PII, server-authoritative grants, Merkle audit boundaries, and offline gates. |
-| [datalake-core #4](https://github.com/datalife-ehealth/datalake-core/issues/4) | NLP & Safety | Active | Sequential Backlog | Adds OTP-scoped audit filtering after core access semantics are bounded. |
+| [datalake-core #4](https://github.com/datalife-ehealth/datalife-datalake-core/issues/4) | NLP & Safety | Active | Sequential Backlog | Adds OTP-scoped audit filtering after core access semantics are bounded. |
 | [clinical-agents #8](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/8) | NLP & Safety | Active | Sequential Backlog | Serializes redacted traces after #7 defines safe invocation events. |
 | [clinical-agents #1](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/1) | NLP & Safety | Active | Sequential Backlog | Threat model and workflow scope precede executable agent boundaries. |
 | [clinical-agents #2](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/2) | NLP & Safety | Active | Sequential Backlog | Versioned intake states provide typed inputs for #7 and evaluation. |
