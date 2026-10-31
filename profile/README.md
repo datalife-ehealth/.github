@@ -163,14 +163,39 @@ Native, or a platform key implementation.
 
 ## Repository matrix
 
-| Repository | Active focus and maturity | Current stack | Roadmap issues |
-|---|---|---|---|
-| [`datalife-analytics-downstream`](https://github.com/datalife-ehealth/datalife-analytics-downstream) | Implemented synthetic contract, fixture generator, and leakage-safe baseline | Python 3.11+, NumPy, pandas, PyArrow, pytest, Ruff | [#8 K-fold validation](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/8) (Ready for Work); [#9 baseline diff](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/9) (Backlog) |
-| [`datalife-datalake-core`](https://github.com/datalife-ehealth/datalife-datalake-core) | Runnable reference API; durable persistence and export remain incomplete | Python 3.11+, FastAPI, Pydantic, SQLAlchemy, PostgreSQL target | [#12 grant memory bounds](https://github.com/datalife-ehealth/datalife-datalake-core/issues/12) (Ready for Work); [#13 export contract](https://github.com/datalife-ehealth/datalife-datalake-core/issues/13) (Backlog) |
-| [`datalife-web-portal`](https://github.com/datalife-ehealth/datalife-web-portal) | Landed accessible UI shell; workflow integration is not live | TypeScript, React 19, Next.js 15, Vitest | [#7 security headers](https://github.com/datalife-ehealth/datalife-web-portal/issues/7) (Ready for Work); [#8 redacted errors](https://github.com/datalife-ehealth/datalife-web-portal/issues/8) (Backlog) |
-| [`datalife-clinical-agents`](https://github.com/datalife-ehealth/datalife-clinical-agents) | Research scaffold with a draft Unicode-policy PR | Python 3.11+ direction; standard-library safety helpers; provider-neutral design | [#7 typed tool envelope](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/7) (Ready for Work); [#8 redacted trace](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/8) (Backlog) |
-| [`datalife-mobile-app`](https://github.com/datalife-ehealth/datalife-mobile-app) | Framework-neutral foundation scaffold | Framework pending; offline contract tests first | [#6 vault boundary](https://github.com/datalife-ehealth/datalife-mobile-app/issues/6) (Backlog) |
-| [`.github`](https://github.com/datalife-ehealth/.github) | Organization templates, policies, and RFC-first governance | Markdown, GitHub Actions, pinned action revisions | [#1 roadmap metadata](https://github.com/datalife-ehealth/.github/issues/1) (Backlog) |
+The matrix below is the complete 27-issue roadmap: four Sprint 0.1 focus items and
+23 sequential backlog items. `Lifecycle` is the intended planning lane; Project 1
+status mutations remain a separate GitHub Project permission operation.
+
+| Issue | Track | Tier | Lifecycle | Dependency rationale |
+|---|---|---|---|---|
+| [analytics #8](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/8) | Analytics & ML | Active | Ready for Work | Extends the landed leakage-safe baseline with subject-stratified validation. |
+| [datalake-core #12](https://github.com/datalife-ehealth/datalake-core/issues/12) | NLP & Safety | Active | Ready for Work | Bounds expired grant memory before further authorization integrations. |
+| [clinical-agents #7](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/7) | NLP & Safety | Active | Ready for Work | Establishes deny-by-default typed tool isolation before trace work. |
+| [web-portal #7](https://github.com/datalife-ehealth/datalife-web-portal/issues/7) | DevOps & CI | Active | Ready for Work | Adds browser security headers before live access-grant flows. |
+| [analytics #9](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/9) | Analytics & ML | Active | Sequential Backlog | Compares future baseline reports after #8 stabilizes evaluation folds. |
+| [analytics #1](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/1) | Analytics & ML | Active | Sequential Backlog | Governs contract/version decisions behind all downstream analytics. |
+| [analytics #4](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/4) | Analytics & ML | Active | Sequential Backlog | Documents datasets and results once contract and baseline outputs settle. |
+| [datalake-core #13](https://github.com/datalife-ehealth/datalake-core/issues/13) | Analytics & ML | Active | Sequential Backlog | Defines a governed read-only export boundary for downstream consumers. |
+| [datalake-core #4](https://github.com/datalife-ehealth/datalake-core/issues/4) | NLP & Safety | Active | Sequential Backlog | Adds OTP-scoped audit filtering after core access semantics are bounded. |
+| [clinical-agents #8](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/8) | NLP & Safety | Active | Sequential Backlog | Serializes redacted traces after #7 defines safe invocation events. |
+| [clinical-agents #1](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/1) | NLP & Safety | Active | Sequential Backlog | Threat model and workflow scope precede executable agent boundaries. |
+| [clinical-agents #2](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/2) | NLP & Safety | Active | Sequential Backlog | Versioned intake states provide typed inputs for #7 and evaluation. |
+| [clinical-agents #3](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/3) | NLP & Safety | Active | Sequential Backlog | Offline adversarial harness evaluates the typed safety boundary. |
+| [clinical-agents #4](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/4) | NLP & Safety | Active | Sequential Backlog | Expands synthetic safety fixtures used by the harness and policy tests. |
+| [clinical-agents #5](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/5) | NLP & Safety | Active | Sequential Backlog | Unicode policy helpers harden deterministic matching before broader agents. |
+| [web-portal #8](https://github.com/datalife-ehealth/datalife-web-portal/issues/8) | DevOps & CI | Active | Sequential Backlog | Redacted client states follow the header/privacy baseline in #7. |
+| [web-portal #1](https://github.com/datalife-ehealth/datalife-web-portal/issues/1) | DevOps & CI | Active | Sequential Backlog | Portal and OTP architecture must be agreed before integration work. |
+| [web-portal #3](https://github.com/datalife-ehealth/datalife-web-portal/issues/3) | DevOps & CI | Active | Sequential Backlog | Mock OTP contract tests depend on the portal/core API boundary. |
+| [web-portal #4](https://github.com/datalife-ehealth/datalife-web-portal/issues/4) | DevOps & CI | Active | Sequential Backlog | Browser threat model constrains headers, storage, and error behavior. |
+| [web-portal #5](https://github.com/datalife-ehealth/datalife-web-portal/issues/5) | DevOps & CI | Active | Sequential Backlog | Offline OpenAPI drift checks protect future portal/core integration. |
+| [mobile #6](https://github.com/datalife-ehealth/datalife-mobile-app/issues/6) | Mobile | Skeleton | Sequential Backlog | Establishes a framework-neutral vault boundary and offline test gate. |
+| [mobile #1](https://github.com/datalife-ehealth/datalife-mobile-app/issues/1) | Mobile | Skeleton | Sequential Backlog | Selects the framework and defines the sovereign-vault threat model. |
+| [mobile #2](https://github.com/datalife-ehealth/datalife-mobile-app/issues/2) | Mobile | Skeleton | Sequential Backlog | Accessible shell follows the framework and boundary decisions in #1. |
+| [mobile #3](https://github.com/datalife-ehealth/datalife-mobile-app/issues/3) | Mobile | Skeleton | Sequential Backlog | Mock grant client follows the core contract and vault boundary. |
+| [mobile #4](https://github.com/datalife-ehealth/datalife-mobile-app/issues/4) | Mobile | Skeleton | Sequential Backlog | PII isolation tests validate local storage before platform integration. |
+| [mobile #5](https://github.com/datalife-ehealth/datalife-mobile-app/issues/5) | Mobile | Skeleton | Sequential Backlog | Offline access-grant snapshots protect compatibility with the core API. |
+| [governance #1](https://github.com/datalife-ehealth/.github/issues/1) | Docs & Governance | Skeleton | Sequential Backlog | Standardizes roadmap metadata and release evidence across repositories. |
 
 ## Contribution tracks
 
