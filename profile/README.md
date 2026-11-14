@@ -63,14 +63,14 @@ flowchart TB
         Grants --> Audit
     end
 
-    Mobile -. "approved payload + opaque subject_key" .-> Ingest
-    Mobile -. "request server-issued grant" .-> Grants
-    Web -. "validate grant / glass-break / verify" .-> Grants
+    Mobile -. "approved payload +<br/>opaque subject_key" .-> Ingest
+    Mobile -. "request server-issued<br/>grant" .-> Grants
+    Web -. "validate grant /<br/>glass-break / verify" .-> Grants
 
     Agents["datalife-clinical-agents<br/>research scaffold"]
     Analytics["datalife-analytics-downstream<br/>research pipeline"]
-    Agents -. "human-reviewed candidate payload" .-> Mobile
-    ObsStore -. "future governed export" .-> Analytics
+    Agents -. "human-reviewed<br/>candidate payload" .-> Mobile
+    ObsStore -. "future governed<br/>export" .-> Analytics
 
     classDef planned fill:#fff8dc,stroke:#b88700,stroke-dasharray: 5 5;
     class ObsStore planned;
