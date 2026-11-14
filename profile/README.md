@@ -49,7 +49,7 @@ or emergency-response platform.
 ## System architecture
 
 ```mermaid
-%%{init: {"flowchart": {"diagramPadding": 32, "nodeSpacing": 48, "rankSpacing": 56}}}%%
+%%{init: {"flowchart": {"diagramPadding": 32, "nodeSpacing": 36, "rankSpacing": 42}}}%%
 flowchart TB
     Patient[Patient] -.-> Mobile["datalife-mobile-app<br/>foundation scaffold"]
     Clinician[Clinician] -.-> Web["datalife-web-portal<br/>foundation scaffold"]
@@ -65,12 +65,12 @@ flowchart TB
 
     Mobile -. "approved payload + opaque subject_key" .-> Ingest
     Mobile -. "request server-issued grant" .-> Grants
-    Web -. "validate grant / glass-break / verify" .-> CoreRepo
+    Web -. "validate grant / glass-break / verify" .-> Grants
 
     Agents["datalife-clinical-agents<br/>research scaffold"]
     Analytics["datalife-analytics-downstream<br/>research pipeline"]
     Agents -. "human-reviewed candidate payload" .-> Mobile
-    CoreRepo -. "future governed export" .-> Analytics
+    ObsStore -. "future governed export (#13)" .-> Analytics
 
     Analytics ~~~ ViewerControlSafeArea["viewer controls safe area"]
     classDef layoutSpacer fill:transparent,stroke:transparent,color:transparent;
