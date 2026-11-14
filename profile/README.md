@@ -49,33 +49,36 @@ or emergency-response platform.
 ## System architecture
 
 ```mermaid
-flowchart TB
-    Agents["datalife-clinical-agents<br/>research scaffold"]
-    Patient[Patient]
-    Clinician[Clinician]
+flowchart LR
+    subgraph Clients["Untrusted / Peripheral Tier"]
+        direction TB
+        Agents["datalife-clinical-agents<br/>research scaffold"]
+        Patient[Patient]
+        Clinician[Clinician]
+        Mobile["datalife-mobile-app<br/>foundation scaffold"]
+        Web["datalife-web-portal<br/>foundation scaffold"]
 
-    Mobile["datalife-mobile-app<br/>foundation scaffold"]
-    Web["datalife-web-portal<br/>foundation scaffold"]
+        Agents -.->|"human-reviewed<br/>candidate"| Mobile
+        Patient -.-> Mobile
+        Clinician -.-> Web
+    end
 
-    Agents -.->|"human-reviewed<br/>candidate"| Mobile
-    Patient -.-> Mobile
-    Clinician -.-> Web
-
-    subgraph CoreRepo["datalife-datalake-core - reference prototype"]
+    subgraph CoreRepo["datalife-datalake-core (reference prototype)"]
         direction TB
         Ingest[Ingestion boundary]
         ObsStore["Typed observation & metadata read<br/>(planned: Core #17)"]
         Grants[Grant and glass-break service]
         Audit[Chained Merkle audit]
+
         Ingest -.-> ObsStore
         Grants --> Audit
     end
 
+    Analytics["datalife-analytics-downstream<br/>research pipeline"]
+
     Mobile -.->|"approved payload +<br/>opaque subject_key"| Ingest
     Mobile -.->|"request server-issued<br/>grant"| Grants
     Web -.->|"validate grant /<br/>glass-break / verify"| Grants
-
-    Analytics["datalife-analytics-downstream<br/>research pipeline"]
     ObsStore -.->|"future governed<br/>export"| Analytics
 
     classDef planned fill:#fff8dc,stroke:#b88700,stroke-dasharray: 5 5;
