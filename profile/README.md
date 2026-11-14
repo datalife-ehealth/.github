@@ -49,14 +49,14 @@ or emergency-response platform.
 ## System architecture
 
 ```mermaid
-%%{init: {"flowchart": {"diagramPadding": 32, "nodeSpacing": 36, "rankSpacing": 42}}}%%
+%%{init: {"flowchart": {"diagramPadding": 16, "nodeSpacing": 28, "rankSpacing": 34}}}%%
 flowchart TB
     Patient[Patient] -.-> Mobile["datalife-mobile-app<br/>foundation scaffold"]
     Clinician[Clinician] -.-> Web["datalife-web-portal<br/>foundation scaffold"]
 
     subgraph CoreRepo["datalife-datalake-core - reference prototype"]
         Ingest[Ingestion boundary]
-        ObsStore["Typed observation & metadata read (planned #17)"]
+        ObsStore["Typed observation & metadata read<br/>(planned: Core #17)"]
         Grants[Grant and glass-break service]
         Audit[Chained Merkle audit]
         Ingest -.-> ObsStore
@@ -70,20 +70,15 @@ flowchart TB
     Agents["datalife-clinical-agents<br/>research scaffold"]
     Analytics["datalife-analytics-downstream<br/>research pipeline"]
     Agents -. "human-reviewed candidate payload" .-> Mobile
-    ObsStore -. "future governed export (#13)" .-> Analytics
+    ObsStore -. "future governed export" .-> Analytics
 
-    Analytics ~~~ ViewerControlSafeArea["viewer controls safe area"]
-    classDef layoutSpacer fill:transparent,stroke:transparent,color:transparent;
     classDef planned fill:#fff8dc,stroke:#b88700,stroke-dasharray: 5 5;
-    class ViewerControlSafeArea layoutSpacer;
     class ObsStore planned;
 ```
 
 Dashed edges are planned integration boundaries; they are not claims that the
 peripheral applications already exist. The core currently has no authorized
-clinical-record retrieval or bulk analytics export API. The blank lower margin is
-intentional so GitHub's Mermaid viewer controls do not cover a repository or core
-component.
+clinical-record retrieval or bulk analytics export API.
 
 ### Normal access flow
 
