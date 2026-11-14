@@ -49,40 +49,37 @@ or emergency-response platform.
 ## System architecture
 
 ```mermaid
-flowchart LR
-    subgraph Clients["Untrusted / Peripheral Tier"]
-        direction TB
-        Agents["datalife-clinical-agents<br/>research scaffold"]
-        Patient[Patient]
-        Clinician[Clinician]
-        Mobile["datalife-mobile-app<br/>foundation scaffold"]
-        Web["datalife-web-portal<br/>foundation scaffold"]
+flowchart TB
+    Agents["datalife-clinical-agents<br/>(research scaffold)"]
+    Patient[Patient]
+    Clinician[Clinician]
 
-        Agents -.->|"human-reviewed<br/>candidate"| Mobile
-        Patient -.-> Mobile
-        Clinician -.-> Web
-    end
+    Mobile["datalife-mobile-app<br/>(foundation scaffold)"]
+    Web["datalife-web-portal<br/>(foundation scaffold)"]
 
-    subgraph CoreRepo["datalife-datalake-core (reference prototype)"]
-        direction TB
-        Ingest[Ingestion boundary]
-        ObsStore["Typed observation & metadata read<br/>(planned: Core #17)"]
-        Grants[Grant and glass-break service]
-        Audit[Chained Merkle audit]
+    Agents -.->|"human-reviewed<br/>candidate"| Mobile
+    Patient -.-> Mobile
+    Clinician -.-> Web
 
-        Ingest -.-> ObsStore
-        Grants --> Audit
-    end
-
-    Analytics["datalife-analytics-downstream<br/>research pipeline"]
+    Ingest["Core: Ingestion boundary"]
+    Grants["Core: Grant & glass-break service"]
+    ObsStore["Core: Typed observation & metadata read<br/>(planned: Core #17)"]
+    Audit["Core: Chained Merkle audit"]
 
     Mobile -.->|"approved payload +<br/>opaque subject_key"| Ingest
     Mobile -.->|"request server-issued<br/>grant"| Grants
     Web -.->|"validate grant /<br/>glass-break / verify"| Grants
+
+    Ingest -.-> ObsStore
+    Grants --> Audit
+
+    Analytics["datalife-analytics-downstream<br/>(research pipeline)"]
     ObsStore -.->|"future governed<br/>export"| Analytics
 
-    classDef planned fill:#fff8dc,stroke:#b88700,stroke-dasharray: 5 5;
-    class ObsStore planned;
+    classDef coreActive fill:#fffbe6,stroke:#b88700,stroke-width:1.5px;
+    classDef corePlanned fill:#fffbe6,stroke:#b88700,stroke-width:1.5px,stroke-dasharray: 5 5;
+    class Ingest,Grants,Audit coreActive;
+    class ObsStore corePlanned;
 ```
 
 Dashed edges are planned integration boundaries; they are not claims that the
