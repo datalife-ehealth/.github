@@ -56,8 +56,10 @@ flowchart TB
 
     subgraph CoreRepo["datalife-datalake-core - reference prototype"]
         Ingest[Ingestion boundary]
+        ObsStore["Typed observation & metadata read (planned #17)"]
         Grants[Grant and glass-break service]
         Audit[Chained Merkle audit]
+        Ingest -.-> ObsStore
         Grants --> Audit
     end
 
@@ -72,7 +74,9 @@ flowchart TB
 
     Analytics ~~~ ViewerControlSafeArea["viewer controls safe area"]
     classDef layoutSpacer fill:transparent,stroke:transparent,color:transparent;
+    classDef planned fill:#fff8dc,stroke:#b88700,stroke-dasharray: 5 5;
     class ViewerControlSafeArea layoutSpacer;
+    class ObsStore planned;
 ```
 
 Dashed edges are planned integration boundaries; they are not claims that the
