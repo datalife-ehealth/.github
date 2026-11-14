@@ -49,7 +49,7 @@ or emergency-response platform.
 ## System architecture
 
 ```mermaid
-%%{init: {"flowchart": {"diagramPadding": 16, "nodeSpacing": 28, "rankSpacing": 34}}}%%
+%%{init: {"flowchart": {"defaultRenderer": "elk", "diagramPadding": 16, "nodeSpacing": 28, "rankSpacing": 32}}}%%
 flowchart TB
     Patient[Patient] -.-> Mobile["datalife-mobile-app<br/>foundation scaffold"]
     Clinician[Clinician] -.-> Web["datalife-web-portal<br/>foundation scaffold"]
