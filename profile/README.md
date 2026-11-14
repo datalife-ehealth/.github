@@ -128,47 +128,66 @@ pipeline from PR #7. It validates the synthetic contract before fitting, uses
 train-only median imputation, isolates subjects across splits, and checks forward
 time leakage both in memory and against source tables before the ridge-logistic fit.
 The output includes a naive prevalence comparator, lineage, limitations, and
-reproducible metrics. The next scoped tasks are [#8 subject-stratified K-fold
-validation](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/8)
-and [#9 baseline-diff regression checks](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/9).
+reproducible metrics. Subject-stratified K-fold validation is now merged through
+[PR #10](https://github.com/datalife-ehealth/datalife-analytics-downstream/pull/10),
+and [PR #11](https://github.com/datalife-ehealth/datalife-analytics-downstream/pull/11)
+hardened aggregation helpers against malformed and non-finite inputs. [#9 baseline-diff
+regression checks](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/9)
+remains open, alongside the new foundation issues [#12 configurable as-of temporal
+windows](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/12),
+[#13 deterministic model benchmark registry](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/13),
+and [#14 calibration and subgroup error diagnostics](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/14).
 
 ### Core and safety
 
-datalife-datalake-core is the runnable Python/FastAPI reference prototype for strict parsing, contextual PII rejection, server-issued grants, glass-break policy, and chained Merkle verification. SQLAlchemy models and PostgreSQL deployment configuration exist, but durable runtime persistence and governed bulk export are not complete. Architecture alignment and contribution claims are coordinated in [#14](https://github.com/datalife-ehealth/datalife-datalake-core/issues/14). The next tasks are [#12 bounded expiry-aware access-grant storage](https://github.com/datalife-ehealth/datalife-datalake-core/issues/12) and [#13 a versioned read-only analytics export contract](https://github.com/datalife-ehealth/datalife-datalake-core/issues/13).
+datalife-datalake-core is the runnable Python/FastAPI reference prototype for strict parsing, contextual PII rejection, server-issued grants, glass-break policy, and chained Merkle verification. SQLAlchemy models and PostgreSQL deployment configuration exist, but durable runtime persistence and governed bulk export are not complete. Merged PRs [#6](https://github.com/datalife-ehealth/datalife-datalake-core/pull/6), [#8](https://github.com/datalife-ehealth/datalife-datalake-core/pull/8), [#9](https://github.com/datalife-ehealth/datalife-datalake-core/pull/9), [#10](https://github.com/datalife-ehealth/datalife-datalake-core/pull/10), and [#11](https://github.com/datalife-ehealth/datalife-datalake-core/pull/11) cover concurrency, hardened parsing, PII rejection, cryptographic vectors, and document metadata persistence. PR [#15](https://github.com/datalife-ehealth/datalife-datalake-core/pull/15) remains open for manifest validation. Architecture alignment and contribution claims are coordinated in [#14](https://github.com/datalife-ehealth/datalife-datalake-core/issues/14). The current foundation sequence is [#12 bounded expiry-aware access-grant storage](https://github.com/datalife-ehealth/datalife-datalake-core/issues/12), [#13 a versioned read-only analytics export contract](https://github.com/datalife-ehealth/datalife-datalake-core/issues/13), [#16 durable Merkle audit persistence](https://github.com/datalife-ehealth/datalife-datalake-core/issues/16), and [#17 an OTP-scoped versioned observation and metadata read contract](https://github.com/datalife-ehealth/datalife-datalake-core/issues/17).
 
-`datalife-clinical-agents` remains a research scaffold. Draft PR #6 proposes a
-standard-library Unicode policy helper using NFKC normalization, case folding, a
-narrow U+200B removal rule, bounded inputs, and exceptions that do not echo text;
-it is not a merged agent runtime. The next safety tasks are [#7 the deny-by-default
-typed tool envelope](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/7)
-and [#8 the redacted execution-trace
-contract](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/8).
+`datalife-clinical-agents` remains a research scaffold. PR [#6](https://github.com/datalife-ehealth/datalife-clinical-agents/pull/6)
+merged the standard-library Unicode policy helper using NFKC normalization, case
+folding, bounded inputs, and non-reflective errors. Active PR [#9](https://github.com/datalife-ehealth/datalife-clinical-agents/pull/9)
+is in final review for typed intake schemas, a deterministic state machine, bounded
+workflow history, and approved-only serialization; it is not yet an agent runtime.
+Open safety roadmap issues include [#3 the offline adversarial evaluation
+harness](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/3), [#4 the
+synthetic safety corpus](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/4),
+[#5 Unicode boundary helpers](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/5),
+[#7 the deny-by-default typed tool envelope](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/7),
+[#8 the redacted execution-trace contract](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/8),
+and [#10 generalized name detection](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/10).
 
 ### Web and mobile
 
-`datalife-web-portal` has a landed accessible Next.js shell, but no live clinical
-workflow or grant-validation service. [#7](https://github.com/datalife-ehealth/datalife-web-portal/issues/7)
-defines the offline security-header baseline; [#8](https://github.com/datalife-ehealth/datalife-web-portal/issues/8)
-defines redacted client error states before an API is wired.
+`datalife-web-portal` has a landed accessible Next.js shell (PR [#6](https://github.com/datalife-ehealth/datalife-web-portal/pull/6)),
+but no live clinical workflow or grant-validation service. [#7](https://github.com/datalife-ehealth/datalife-web-portal/issues/7)
+defines the offline security-header baseline and [#8](https://github.com/datalife-ehealth/datalife-web-portal/issues/8)
+defines redacted client error states. A read-only synthetic research sandbox and
+audit visualizer should follow the v1 data contracts, not precede them.
 
 `datalife-mobile-app` is framework-neutral and has no application runtime yet. [#6](https://github.com/datalife-ehealth/datalife-mobile-app/issues/6)
 scaffolds a vault boundary and offline test gate without choosing Flutter, React
-Native, or a platform key implementation.
+Native, or a platform key implementation. Runtime work remains intentionally deferred
+until Core v1 consent, identifier, ingestion, and access contracts stabilize.
 
 ## Repository matrix
 
-The matrix below is the complete 28-issue roadmap: four Sprint 0.1 focus items,
-23 sequential backlog items, and one core alignment hub. Lifecycle is the intended
-planning lane; Project 1 status mutations remain a separate GitHub Project
-permission operation.
+The matrix below preserves the original 28-issue roadmap: four Sprint 0.1 focus
+items, 23 sequential backlog items, and one core alignment hub. It now also includes
+the five foundation issues opened on 2026-11-14. Lifecycle is the intended planning
+lane; Project 1 status mutations remain a separate GitHub Project permission
+operation.
 
 | Issue | Track | Tier | Lifecycle | Dependency rationale |
 | :--- | :--- | :--- | :--- | :--- |
-| [analytics #8](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/8) | Analytics & ML | Active | Ready for Work | Extends the landed leakage-safe baseline with subject-stratified validation. |
+| [analytics #8](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/8) | Analytics & ML | Active | Completed (merged via PR #10) | Subject-stratified folds now extend the landed leakage-safe baseline. |
 | [datalake-core #12](https://github.com/datalife-ehealth/datalife-datalake-core/issues/12) | NLP & Safety | Active | Ready for Work | Bounds expired grant memory before further authorization integrations. |
 | [clinical-agents #7](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/7) | NLP & Safety | Active | Ready for Work | Establishes deny-by-default typed tool isolation before trace work. |
 | [web-portal #7](https://github.com/datalife-ehealth/datalife-web-portal/issues/7) | DevOps & CI | Active | Ready for Work | Adds browser security headers before live access-grant flows. |
 | [analytics #9](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/9) | Analytics & ML | Active | Sequential Backlog | Compares future baseline reports after #8 stabilizes evaluation folds. |
+| [datalake-core #16](https://github.com/datalife-ehealth/datalife-datalake-core/issues/16) | Core Infra / Security | Active | Sequential Backlog | Makes the Merkle audit ledger durable and restart-safe before integrated reads. |
+| [datalake-core #17](https://github.com/datalife-ehealth/datalife-datalake-core/issues/17) | Core Infra / Data | Active | Sequential Backlog | Adds the versioned, OTP-scoped observation and metadata read boundary. |
+| [analytics #12](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/12) | Analytics & ML | Active | Sequential Backlog | Adds as-of temporal windows and episode features after the v0.1 baseline. |
+| [analytics #13](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/13) | Analytics & ML | Active | Sequential Backlog | Makes model comparisons deterministic and extensible. |
+| [analytics #14](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/14) | Analytics & ML | Active | Sequential Backlog | Adds calibration and subgroup error diagnostics beyond raw ROC AUC. |
 | [analytics #1](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/1) | Analytics & ML | Active | Sequential Backlog | Governs contract/version decisions behind all downstream analytics. |
 | [analytics #4](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/4) | Analytics & ML | Active | Sequential Backlog | Documents datasets and results once contract and baseline outputs settle. |
 | [datalake-core #13](https://github.com/datalife-ehealth/datalife-datalake-core/issues/13) | Analytics & ML | Active | Sequential Backlog | Defines a governed read-only export boundary for downstream consumers. |
@@ -192,6 +211,17 @@ permission operation.
 | [mobile #4](https://github.com/datalife-ehealth/datalife-mobile-app/issues/4) | Mobile | Skeleton | Sequential Backlog | PII isolation tests validate local storage before platform integration. |
 | [mobile #5](https://github.com/datalife-ehealth/datalife-mobile-app/issues/5) | Mobile | Skeleton | Sequential Backlog | Offline access-grant snapshots protect compatibility with the core API. |
 | [governance #1](https://github.com/datalife-ehealth/.github/issues/1) | Docs & Governance | Skeleton | Sequential Backlog | Standardizes roadmap metadata and release evidence across repositories. |
+
+### Cross-repo v1 contract and synthetic vertical slice
+
+Core #13, #16, and #17, Clinical Agents PR #9, and Analytics #12-#14 form the
+next cross-repository foundation milestone. The target is an offline, synthetic
+vertical slice: an approved typed intake candidate passes the Core v1 validation and
+authorization boundary, is stored and exported through a versioned release manifest,
+is validated by Analytics, and produces a reproducible report that the Web Portal can
+render as a read-only research sandbox. No live patient data, production clinical
+workflow, or mobile runtime is implied. The Mobile App remains at the architecture
+and threat-model stage until these contracts stabilize.
 
 ## Contribution tracks
 
