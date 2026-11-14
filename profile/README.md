@@ -71,7 +71,6 @@ flowchart TB
     CoreRepo -. "future governed export" .-> Analytics
 
     Analytics ~~~ ViewerControlSafeArea["viewer controls safe area"]
-    Audit ~~~ ViewerControlSafeArea
     classDef layoutSpacer fill:transparent,stroke:transparent,color:transparent;
     class ViewerControlSafeArea layoutSpacer;
 ```
