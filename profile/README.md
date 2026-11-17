@@ -137,7 +137,7 @@ reproducible metrics. Subject-stratified K-fold validation is now merged through
 and [PR #11](https://github.com/datalife-ehealth/datalife-analytics-downstream/pull/11)
 hardened aggregation helpers against malformed and non-finite inputs. [#9 baseline-diff
 regression checks](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/9)
-remains open, alongside the new foundation issues [#12 configurable as-of temporal
+has an active PR (#15) under review, alongside the new foundation issues [#12 configurable as-of temporal
 windows](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/12),
 [#13 deterministic model benchmark registry](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/13),
 and [#14 calibration and subgroup error diagnostics](https://github.com/datalife-ehealth/datalife-analytics-downstream/issues/14).
@@ -148,9 +148,10 @@ datalife-datalake-core is the runnable Python/FastAPI reference prototype for st
 
 `datalife-clinical-agents` remains a research scaffold. PR [#6](https://github.com/datalife-ehealth/datalife-clinical-agents/pull/6)
 merged the standard-library Unicode policy helper using NFKC normalization, case
-folding, bounded inputs, and non-reflective errors. Active PR [#9](https://github.com/datalife-ehealth/datalife-clinical-agents/pull/9)
-is in final review for typed intake schemas, a deterministic state machine, bounded
-workflow history, and approved-only serialization; it is not yet an agent runtime.
+folding, bounded inputs, and non-reflective errors. PR [#9](https://github.com/datalife-ehealth/datalife-clinical-agents/pull/9) is now
+merged, landing typed intake schemas, a deterministic state machine, bounded workflow
+history, and approved-only serialization; it is not yet an agent runtime, and next
+active work shifts to #7 and #3.
 Open safety roadmap issues include [#3 the offline adversarial evaluation
 harness](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/3), [#4 the
 synthetic safety corpus](https://github.com/datalife-ehealth/datalife-clinical-agents/issues/4),
@@ -218,7 +219,7 @@ operation.
 
 ### Cross-repo v1 contract and synthetic vertical slice
 
-Core #13, #16, and #17, Clinical Agents PR #9, and Analytics #12-#14 form the
+Core #13, #16, and #17, the landed Clinical Agents intake state machine (PR #9), and Analytics #12-#14 form the
 next cross-repository foundation milestone. The target is an offline, synthetic
 vertical slice: an approved typed intake candidate passes the Core v1 validation and
 authorization boundary, is stored and exported through a versioned release manifest,
